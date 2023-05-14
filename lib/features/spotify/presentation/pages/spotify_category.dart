@@ -86,26 +86,20 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
       final data = jsonDecode(response.body);
       final array = data["playlists"]["items"];
       List<Map<String, Future<String>>> delta = [];
-      // Map<String, Future<String>> payload = {};
 
       for (int index = 0; index < array.length; index++) {
 
-        // https://palota-jobs-africa-spotify-fa.azurewebsites.net/api/playlists/37i9dQZF1DX0y9AJEwjBeo
         String imageUrl = array[index]["images"][0]["url"];
         String title = array[index]["name"];
-        // String description = array[index]["description"];
         String text = array[index]["description"];
         String description = htmlParser.parseFragment(text).text.toString();
         String identifier = array[index]["id"];
-        // print("endpoint; ${identifier}");
 
         delta.add({ "image": Future.value(imageUrl),
                     "title": Future.value(title), 
                     "identifier": Future.value(identifier), 
                     "description": Future.value(description), });
 
-        
-                        
       }
 
       setState(() {
