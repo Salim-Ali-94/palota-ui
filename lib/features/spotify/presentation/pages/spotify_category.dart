@@ -26,55 +26,47 @@ class SpotifyCategory extends StatefulWidget {
 class _SpotifyCategoryState extends State<SpotifyCategory> {
 
   String spotifyApiKey = dotenv.get('SPOTIFY_API_KEY', fallback: '');
-  String base = "https://palota-jobs-africa-spotify-fa.azurewebsites.net/api/browse/categories/afro";
+  String base = "https://palota-jobs-africa-spotify-fa.azurewebsites.net/api/browse/categories";
+  Future<String>? image;
+  Future<String>? category;
 
-  Future<String> fetchImage() async {
+  @override
+  void initState() {
 
-    // String endpoint= "$base";
-    // var response = await http.get(Uri.parse(endpoint));
+    super.initState();
+    fetchData().then((data) {
 
-    final response = await http.get(Uri.parse(base), 
-                                    headers: { 'x-functions-key': spotifyApiKey, }, );
+      setState(() {
 
-    if (response.statusCode == 200) {
+        image = Future.value(data["image"]);
+        category = Future.value(data["category"]);
 
-      final data = response.body;
-      String img = jsonDecode(response.body.toString())["icons"][0]["url"];
-      return img;
+      });
 
-    } else {
-
-      print('Request failed with status: ${response.statusCode}');
-      return "";
-
-    }
-
-    return "";
+    });
 
   }
 
-  Future<String> fetchCategory() async {
 
-    // String endpoint= "$base";
-    // var response = await http.get(Uri.parse(endpoint));
+  Future<Map<String, String>> fetchData() async {
 
-    final response = await http.get(Uri.parse(base), 
+    String endpoint = "$base/${widget.categoryId}";
+    final response = await http.get(Uri.parse(endpoint), 
                                     headers: { 'x-functions-key': spotifyApiKey, }, );
 
     if (response.statusCode == 200) {
 
       final data = response.body;
-      String category = jsonDecode(response.body.toString())["name"];
-      return category;
+      String image = jsonDecode(data.toString())["icons"][0]["url"];
+      String category = jsonDecode(data.toString())["name"];
+      return { "image": image, "category": category };
 
     } else {
 
       print('Request failed with status: ${response.statusCode}');
-      return "";
+      return { "image": "", "category": "" };
 
     }
-
-    return "";
 
   }
 
@@ -109,8 +101,8 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
                                   child: Container(padding: EdgeInsets.only(top: 32), 
                                                   //  color: AppColors.black,
                                                    child: Column(children: [Row(mainAxisAlignment: MainAxisAlignment.end,
-                                                                                children: [Header(image: fetchImage(),
-                                                                                                  category: fetchCategory()), ], ), 
+                                                                                children: [Header(image: image,
+                                                                                                  category: category), ], ), 
                                                                                                   
                                                                             SizedBox(height: 32),
                                                                             

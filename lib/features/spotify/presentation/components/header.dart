@@ -4,8 +4,8 @@ import 'package:flutter_spotify_africa_assessment/colors.dart';
 
 class Header extends StatelessWidget {
 
-  late Future<String> image;
-  late Future<String> category;
+  late Future<String>? image;
+  late Future<String>? category;
 
   Header({ super.key,
            required this.image,
