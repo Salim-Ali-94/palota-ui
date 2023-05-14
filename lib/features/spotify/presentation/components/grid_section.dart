@@ -12,16 +12,17 @@ class GridSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Container(padding: EdgeInsets.symmetric(horizontal: 24),
-                     child: GridView.count(crossAxisCount: 2,
-                                           crossAxisSpacing: 16,
-                                           mainAxisSpacing: 16,
-                                           shrinkWrap: true,
-                                           childAspectRatio: 163 / 187,
-                                           physics: NeverScrollableScrollPhysics(),
+    return (playlists.isEmpty) ? Center(child: CircularProgressIndicator()) : 
+                                 Container(padding: EdgeInsets.symmetric(horizontal: 24),
+                                           child: GridView.count(crossAxisCount: 2,
+                                                                 crossAxisSpacing: 16,
+                                                                 mainAxisSpacing: 16,
+                                                                 shrinkWrap: true,
+                                                                 childAspectRatio: 163 / 187,
+                                                                 physics: NeverScrollableScrollPhysics(),
 
-                                           children: playlists.map((playlist) => PlaylistCard(image: playlist["image"],
-                                                                                              title: playlist["title"], ), ).toList(), ), );
+                                                                 children: playlists.map((playlist) => PlaylistCard(image: playlist["image"],
+                                                                                                                    title: playlist["title"], ), ).toList(), ), );
 
   }
 
