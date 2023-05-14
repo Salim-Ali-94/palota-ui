@@ -4,7 +4,12 @@ import 'package:flutter_spotify_africa_assessment/colors.dart';
 
 class Header extends StatelessWidget {
 
-  const Header({ super.key });
+  late String image;
+  late String category;
+
+  Header({ super.key,
+           required this.image,
+           required this.category });
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +22,11 @@ class Header extends StatelessWidget {
                      height: 72, 
                      padding: EdgeInsets.symmetric(horizontal: 4),
                      
-                     child: Row(children: [Image.asset("assets/images/avatar.png"), 
+                     child: Row(children: [Image.asset(this.image), 
                                            SizedBox(width: 20),
                                            RichText(text: TextSpan(style: DefaultTextStyle.of(context).style,
                                                                    children: <TextSpan>[
-                                                                   TextSpan(text: 'Afro',
+                                                                   TextSpan(text: this.category,
                                                                             style: TextStyle(fontSize: 28,
                                                                                              fontWeight: FontWeight.bold, ), ),
                                                                    TextSpan(text: ' playlists',

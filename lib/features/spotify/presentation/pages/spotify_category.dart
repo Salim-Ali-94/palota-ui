@@ -52,7 +52,8 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
       ),
 
       body: SingleChildScrollView(physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                                  child: Column(children: [Header()]),),
+                                  child: Column(children: [Header(image: "assets/images/avatar.png",
+                                                                  category: 'Afro'), ], ), ),
 
     );
   }
