@@ -7,6 +7,9 @@ import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/
 import "package:http/http.dart" as http;
 import "dart:convert";
 
+import 'package:flutter_spotify_africa_assessment/providers/screen_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:html/parser.dart' as htmlParser;
 
 // TODO: fetch and populate playlist info and allow for click-through to detail
 // Feel free to change this to a stateful widget if necessary
@@ -88,9 +91,15 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
 
         String imageUrl = array[index]["images"][0]["url"];
         String title = array[index]["name"];
+        String text = array[index]["description"];
+        String description = htmlParser.parseFragment(text).text.toString();
+        String identifier = array[index]["id"];
+
         delta.add({ "image": Future.value(imageUrl),
-                        "title": Future.value(title), });
-                        
+                    "title": Future.value(title), 
+                    "identifier": Future.value(identifier), 
+                    "description": Future.value(description), });
+
       }
 
       setState(() {
@@ -139,10 +148,12 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
 
   @override
   Widget build(BuildContext context) {
+    var selectedPlaylist = context.watch<ScreenProvider>().selectedPlaylist;
+
     return Scaffold(
       backgroundColor: AppColors.black,
       appBar: AppBar(
-        title: const Text('Afro'),
+        title: Text('${widget.categoryId[0].toUpperCase()}${widget.categoryId.substring(1).toLowerCase()}'),
         centerTitle: true,
         actions: [
           IconButton(

@@ -1,68 +1,59 @@
 import "package:flutter/material.dart";
 import 'package:flutter_spotify_africa_assessment/colors.dart';
+import 'package:flutter_spotify_africa_assessment/routes.dart';
+import 'package:flutter_spotify_africa_assessment/providers/screen_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_spotify_africa_assessment/utility.dart';
 
 
-class PlaylistCard extends StatelessWidget {
+class PlaylistCard extends StatefulWidget {
 
-  late Future<String>? image;
-  late Future<String>? title;
+  Map<String, Future<String>> playlist;
+  late double gap;
+  late double padding;
+  late double innerRadius;
+  late double outerRadius;
+  late double size;
   
   PlaylistCard({ super.key,
-                 required this.image,
-                 required this.title });
+                 required this.gap,
+                 required this.padding,
+                 required this.size,
+                 required this.innerRadius,
+                 required this.outerRadius,
+                 required this.playlist, });
 
-  Widget imageBuilder(context, snapshot) {
+  @override
+  State<PlaylistCard> createState() => _PlaylistCardState();
 
-    if (snapshot.connectionState == ConnectionState.done) {
+}
 
-      final imageUrl = snapshot.data;
-      return ClipRRect(borderRadius: BorderRadius.circular(8), 
-                       child: Image.network(imageUrl!));
+class _PlaylistCardState extends State<PlaylistCard> {
 
-    } else {
+  void pressHandler() {
 
-      return Center(child: CircularProgressIndicator());
-
-    }
-
-  }
-
-  Widget textBuilder(context, snapshot) {
-
-    if (snapshot.connectionState == ConnectionState.done) {
-
-      final categoryName = snapshot.data;
-
-      return Text(categoryName,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: 12,
-                                   fontWeight: FontWeight.bold, ), );
-
-    } else {
-
-      return CircularProgressIndicator();
-
-    }
+    context.read<ScreenProvider>().setPlaylist(widget.playlist);
+    Navigator.pushNamed(context, AppRoutes.spotifyPlaylist);
 
   }
 
   @override
   Widget build(BuildContext context) {
 
-    return Container(
-                     //  width: 163, 
-                     //  height: 187,
-                     padding: EdgeInsets.all(4),
-                     decoration: BoxDecoration(color: AppColors.grey,
-                                               borderRadius: BorderRadius.circular(12)), 
-                     child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                   children: [FutureBuilder<String>(future: image,
-                                                                    builder: (context, snapshot) => imageBuilder(context, snapshot), ), 
-                                                                    
-                                              FutureBuilder<String>(future: title,
-                                                                    builder: (context, snapshot) => textBuilder(context, snapshot), ), ], ), );
+    return GestureDetector(onTap: () => pressHandler(), 
+                           child: Container(padding: EdgeInsets.all(widget.padding),
+                                            decoration: BoxDecoration(color: AppColors.grey,
+                                            borderRadius: BorderRadius.circular(widget.outerRadius)), 
+
+                                            child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          children: [FutureBuilder<String>(future: widget.playlist["image"],
+                                                                                           builder: (context, snapshot) => imageBuilder(context, snapshot, widget.innerRadius), ), 
+
+                                                                     SizedBox(height: widget.gap),
+
+                                                                     FutureBuilder<String>(future: widget.playlist["title"],
+                                                                                           builder: (context, snapshot) => textBuilder(context, snapshot, widget.size), ), ], ), ), );
 
   }
 
