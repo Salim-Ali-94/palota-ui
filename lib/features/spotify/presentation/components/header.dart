@@ -52,11 +52,13 @@ class Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Container(decoration: BoxDecoration(color: AppColors.grey,
+    return Expanded(child: Container(decoration: BoxDecoration(color: AppColors.grey,
                                                borderRadius: BorderRadius.only(topLeft: Radius.circular(12), 
                                                                                bottomLeft: Radius.circular(12), ), ),
                                                     
-                     width: 366,
+                    //  width: double.infinity,
+                    //  width: 366,
+                    margin: EdgeInsets.only(left: 24),
                      height: 72, 
                      padding: EdgeInsets.symmetric(horizontal: 4, 
                                                    vertical: 4),
@@ -67,7 +69,7 @@ class Header extends StatelessWidget {
                                            SizedBox(width: 20),
                                             
                                            FutureBuilder<String>(future: category,
-                                                                  builder: (context, snapshot) => textBuilder(context, snapshot), ), ], ), );
+                                                                  builder: (context, snapshot) => textBuilder(context, snapshot), ), ], ), ));
 
   }
 
