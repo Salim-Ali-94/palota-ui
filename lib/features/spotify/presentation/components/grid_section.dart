@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "package:flutter_spotify_africa_assessment/features/spotify/presentation/components/playlist_card.dart";
 
 
 class GridSection extends StatelessWidget {
@@ -9,13 +10,12 @@ class GridSection extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Container(width: 342,
-                     color: Colors.blue,
                      child: Wrap(spacing: 16, 
                                  runSpacing: 16,
-                                 children: [Container(width: 163, color: Colors.amber, child: Text("GRID")), 
-                                            Container(width: 163, color: Colors.amber, child: Text("GRID")),
-                                            Container(width: 163, color: Colors.amber, child: Text("GRID")), 
-                                            Container(width: 163, color: Colors.amber, child: Text("GRID"))]));
+                                 children: [PlaylistCard(), 
+                                            PlaylistCard(),
+                                            PlaylistCard(), 
+                                            PlaylistCard()]));
 
   }
 
