@@ -89,10 +89,17 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
 
       for (int index = 0; index < array.length; index++) {
 
+        // https://palota-jobs-africa-spotify-fa.azurewebsites.net/api/playlists/37i9dQZF1DX0y9AJEwjBeo
         String imageUrl = array[index]["images"][0]["url"];
         String title = array[index]["name"];
+        String description = array[index]["description"];
+        String identifier = array[index]["id"];
+        // print("endpoint; ${identifier}");
+
         delta.add({ "image": Future.value(imageUrl),
-                    "title": Future.value(title), });
+                    "title": Future.value(title), 
+                    "identifier": Future.value(identifier), 
+                    "description": Future.value(description), });
 
         
                         

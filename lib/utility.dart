@@ -1,14 +1,14 @@
 import "package:flutter/material.dart";
 
 
-Widget textBuilder(context, snapshot, size) {
+Widget textBuilder(context, snapshot, size, { int lines = 1 }) {
 
   if (snapshot.connectionState == ConnectionState.done) {
 
     final text = snapshot.data;
 
     return Text(text,
-                maxLines: 1,
+                maxLines: lines,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(fontSize: size,
                                  fontWeight: FontWeight.bold, ), );
