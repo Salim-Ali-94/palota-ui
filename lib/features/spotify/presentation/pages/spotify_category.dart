@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spotify_africa_assessment/colors.dart';
 import 'package:flutter_spotify_africa_assessment/routes.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/components/header.dart';
+
 
 // TODO: fetch and populate playlist info and allow for click-through to detail
 // Feel free to change this to a stateful widget if necessary
@@ -20,7 +22,7 @@ class SpotifyCategory extends StatefulWidget {
 
 class _SpotifyCategoryState extends State<SpotifyCategory> {
 
-  String spotifyApiKey = dotenv.get('SPOTIFY_API_KEY', fallback: "");
+  String spotifyApiKey = dotenv.get('SPOTIFY_API_KEY', fallback: '');
 
   @override
   Widget build(BuildContext context) {
@@ -48,15 +50,10 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
           ),
         ),
       ),
-      body: Container(
-        padding: const EdgeInsets.all(16),
-        child: Center(
-          child: Text(
-            '''Populate with playlist info for category '${widget.categoryId}', click on playlist to view playlist detail''',
-            textAlign: TextAlign.center,
-          ),
-        ),
-      ),
+
+      body: SingleChildScrollView(physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                                  child: Column(children: [Header()]),),
+
     );
   }
 }
