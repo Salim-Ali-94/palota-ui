@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:intl/intl.dart';
 
 
 Widget textBuilder(context, snapshot, size, { int lines = 1 }) {
@@ -34,5 +35,13 @@ Widget imageBuilder(context, snapshot, radius) {
     return Center(child: CircularProgressIndicator());
 
   }
+
+}
+
+String formatNumber(String numberString) {
+
+  final number = int.parse(numberString);
+  final formatter = NumberFormat('#,###');
+  return formatter.format(number);
 
 }

@@ -9,7 +9,7 @@ import "package:flutter_spotify_africa_assessment/features/spotify/presentation/
 import "package:http/http.dart" as http;
 import "dart:convert";
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
+import 'package:html/parser.dart' as htmlParser;
 
 class SpotifyPlaylist extends StatefulWidget {
 
@@ -71,7 +71,7 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
     if (response.statusCode == 200) {
 
       final data = jsonDecode(response.body);
-      String number = data["followers"]["total"].toString() + " followers";
+      String number = formatNumber(data["followers"]["total"].toString()) + " followers";
 
       setState(() {
 

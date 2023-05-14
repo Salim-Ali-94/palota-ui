@@ -9,6 +9,7 @@ import "dart:convert";
 
 import 'package:flutter_spotify_africa_assessment/providers/screen_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:html/parser.dart' as htmlParser;
 
 // TODO: fetch and populate playlist info and allow for click-through to detail
 // Feel free to change this to a stateful widget if necessary
@@ -92,7 +93,9 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
         // https://palota-jobs-africa-spotify-fa.azurewebsites.net/api/playlists/37i9dQZF1DX0y9AJEwjBeo
         String imageUrl = array[index]["images"][0]["url"];
         String title = array[index]["name"];
-        String description = array[index]["description"];
+        // String description = array[index]["description"];
+        String text = array[index]["description"];
+        String description = htmlParser.parseFragment(text).text.toString();
         String identifier = array[index]["id"];
         // print("endpoint; ${identifier}");
 
