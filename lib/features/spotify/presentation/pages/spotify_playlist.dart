@@ -123,7 +123,8 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
                                                                              
                                                                              SizedBox(height: 16), 
 
-                                                                             SectionDivier(), ], ), ), ), );
+                                                                             Container(padding: EdgeInsets.symmetric(horizontal: 32), 
+                                                                                       child: SectionDivier()), ], ), ), ), );
 
   }
 
