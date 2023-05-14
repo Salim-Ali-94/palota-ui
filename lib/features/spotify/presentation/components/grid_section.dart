@@ -21,9 +21,10 @@ class GridSection extends StatelessWidget {
                                                                  childAspectRatio: 163 / 187,
                                                                  physics: NeverScrollableScrollPhysics(),
 
-                                                                 children: playlists.map((playlist) => PlaylistCard(image: playlist["image"],
-                                                                                                                    title: playlist["title"], ), ).toList(), ), );
-
+                                                                //  children: playlists.map((playlist) => PlaylistCard(image: playlist["image"],
+                                                                //                                                     title: playlist["title"], 
+                                                                //                                                     index: index), ).toList(), ), );
+                                                                 children: playlists.map((playlist) => PlaylistCard(playlist: playlist), ).toList(), ), );
   }
 
 }

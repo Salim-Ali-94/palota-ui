@@ -36,6 +36,7 @@ dependencies:
   url_launcher: ^6.1.11
   flutter_dotenv: ^5.0.2
   http: ^0.13.6
+  provider: ^6.0.5
 
 dev_dependencies:
   flutter_lints: ^2.0.0

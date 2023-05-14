@@ -38,7 +38,7 @@ class AppRoutes {
           ),
           settings: settings,
         );
-      case about:
+      case spotifyPlaylist:
         return MaterialPageRoute(
           builder: (BuildContext context) => const SpotifyPlaylist(),
           settings: settings,
