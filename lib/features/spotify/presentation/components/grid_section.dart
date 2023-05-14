@@ -24,7 +24,12 @@ class GridSection extends StatelessWidget {
                                                                 //  children: playlists.map((playlist) => PlaylistCard(image: playlist["image"],
                                                                 //                                                     title: playlist["title"], 
                                                                 //                                                     index: index), ).toList(), ), );
-                                                                 children: playlists.map((playlist) => PlaylistCard(playlist: playlist), ).toList(), ), );
+                                                                 children: playlists.map((playlist) => PlaylistCard(playlist: playlist,
+                                                                                                                    padding: 4,
+                                                                                                                    gap: 4,
+                                                                                                                    size: 12,
+                                                                                                                    innerRadius: 8,
+                                                                                                                    outerRadius: 12), ).toList(), ), );
   }
 
 }

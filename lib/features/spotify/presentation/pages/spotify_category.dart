@@ -7,7 +7,7 @@ import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/
 import "package:http/http.dart" as http;
 import "dart:convert";
 
-import 'package:flutter_spotify_africa_assessment/providers/screen_context.dart';
+import 'package:flutter_spotify_africa_assessment/providers/screen_provider.dart';
 import 'package:provider/provider.dart';
 
 // TODO: fetch and populate playlist info and allow for click-through to detail

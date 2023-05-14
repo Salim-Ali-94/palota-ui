@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 
 
-Widget textBuilder(context, snapshot) {
+Widget textBuilder(context, snapshot, size) {
 
   if (snapshot.connectionState == ConnectionState.done) {
 
@@ -10,12 +10,28 @@ Widget textBuilder(context, snapshot) {
     return Text(text,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontSize: 12,
+                style: TextStyle(fontSize: size,
                                  fontWeight: FontWeight.bold, ), );
 
   } else {
 
     return CircularProgressIndicator();
+
+  }
+
+}
+
+Widget imageBuilder(context, snapshot, radius) {
+
+  if (snapshot.connectionState == ConnectionState.done) {
+
+    final imageUrl = snapshot.data;
+    return ClipRRect(borderRadius: BorderRadius.circular(radius), 
+                      child: Image.network(imageUrl!));
+
+  } else {
+
+    return Center(child: CircularProgressIndicator());
 
   }
 

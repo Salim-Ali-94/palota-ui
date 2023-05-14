@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import 'package:flutter_spotify_africa_assessment/colors.dart';
 import 'package:flutter_spotify_africa_assessment/routes.dart';
-import 'package:flutter_spotify_africa_assessment/providers/screen_context.dart';
+import 'package:flutter_spotify_africa_assessment/providers/screen_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spotify_africa_assessment/utility.dart';
 
@@ -10,9 +10,19 @@ class PlaylistCard extends StatefulWidget {
 
   Map<String, Future<String>> playlist;
   // late int index;
+  late double gap;
+  late double padding;
+  late double innerRadius;
+  late double outerRadius;
+  late double size;
   
   PlaylistCard({ super.key,
                 //  required this.image,
+                 required this.gap,
+                 required this.padding,
+                 required this.size,
+                 required this.innerRadius,
+                 required this.outerRadius,
                  required this.playlist, });
 
   @override
@@ -34,21 +44,22 @@ class _PlaylistCardState extends State<PlaylistCard> {
   //               //  required this.index, });
   //               //  required this.title });
 
-  Widget imageBuilder(context, snapshot) {
+  // Widget imageBuilder(context, snapshot) {
 
-    if (snapshot.connectionState == ConnectionState.done) {
+  //   if (snapshot.connectionState == ConnectionState.done) {
 
-      final imageUrl = snapshot.data;
-      return ClipRRect(borderRadius: BorderRadius.circular(8), 
-                       child: Image.network(imageUrl!));
+  //     final imageUrl = snapshot.data;
+  //     // return ClipRRect(borderRadius: BorderRadius.circular(8), 
+  //     return ClipRRect(borderRadius: BorderRadius.circular(widget.innerRadius), 
+  //                      child: Image.network(imageUrl!));
 
-    } else {
+  //   } else {
 
-      return Center(child: CircularProgressIndicator());
+  //     return Center(child: CircularProgressIndicator());
 
-    }
+  //   }
 
-  }
+  // }
 
   // Widget textBuilder(context, snapshot) {
 
@@ -83,17 +94,22 @@ class _PlaylistCardState extends State<PlaylistCard> {
     return GestureDetector(onTap: () => pressHandler(), 
                            child: Container(
                      //  width: 163, 
-                     //  height: 187,
-                     padding: EdgeInsets.all(4),
+                     //  width: 163, 
+                      // height: 336,
+                    //  padding: EdgeInsets.all(4),
+                     padding: EdgeInsets.all(widget.padding),
                      decoration: BoxDecoration(color: AppColors.grey,
-                                               borderRadius: BorderRadius.circular(12)), 
+                                              //  borderRadius: BorderRadius.circular(12)), 
+                                               borderRadius: BorderRadius.circular(widget.outerRadius)), 
                      child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                    crossAxisAlignment: CrossAxisAlignment.start,
                                    children: [FutureBuilder<String>(future: widget.playlist["image"],
-                                                                    builder: (context, snapshot) => imageBuilder(context, snapshot), ), 
-                                                                    
+                                                                    builder: (context, snapshot) => imageBuilder(context, snapshot, widget.innerRadius), ), 
+
+                                              SizedBox(height: widget.gap),
+
                                               FutureBuilder<String>(future: widget.playlist["title"],
-                                                                    builder: (context, snapshot) => textBuilder(context, snapshot), ), ], ), ));
+                                                                    builder: (context, snapshot) => textBuilder(context, snapshot, widget.size), ), ], ), ));
 
   }
 
