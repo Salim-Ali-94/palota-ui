@@ -21,8 +21,9 @@ class _GridSectionState extends State<GridSection> {
   // String base = "https://palota-jobs-africa-spotify-fa.azurewebsites.net/api/browse/categories/afro/playlists?limit=1";
   // String base = "https://palota-jobs-africa-spotify-fa.azurewebsites.net/api/browse/categories/afro/playlists";
   String base = "https://palota-jobs-africa-spotify-fa.azurewebsites.net/api/browse";
-  Future<String>? image;
-  Future<String>? title;
+  // Future<String>? image;
+  // Future<String>? title;
+  List<Map<String, Future<String>>> playlists = [];
 
 
   @override
@@ -33,8 +34,8 @@ class _GridSectionState extends State<GridSection> {
 
       setState(() {
 
-        image = Future.value(data["image"]);
-        title = Future.value(data["title"]);
+        playlists = data;
+        print(data);
 
       });
 
@@ -42,7 +43,7 @@ class _GridSectionState extends State<GridSection> {
 
   }
 
-  Future<Map<String, String>> fetchData() async {
+  Future<List<Map<String, Future<String>>>> fetchData() async {
 
     String endpoint = "$base/categories/afro/playlists";
     final response = await http.get(Uri.parse(endpoint), 
@@ -51,14 +52,27 @@ class _GridSectionState extends State<GridSection> {
     if (response.statusCode == 200) {
 
       final data = response.body;
-      String image = jsonDecode(data.toString())["playlists"]["items"][0]["images"][0]["url"];
-      String title = jsonDecode(data.toString())["playlists"]["items"][0]["name"];
-      return { "image": image, "title": title };
+      List<Map<String, Future<String>>> playlist = [];
+      // String image = jsonDecode(data.toString())["playlists"]["items"][0]["images"][0]["url"];
+      // String title = jsonDecode(data.toString())["playlists"]["items"][0]["name"];
+      final array = jsonDecode(data.toString())["playlists"]["items"];
+
+      for (int index = 0; index < array.length; index++) {
+
+        String image = array[index]["images"][0]["url"];
+        String title = array[index]["name"];
+        playlist.add({ "image": Future.value(image), 
+                       "title": Future.value(title) });        
+
+      }
+
+      return playlist;
 
     } else {
 
       print('Request failed with status: ${response.statusCode}');
-      return { "image": "", "title": "" };
+      return [{ "image": Future.value(""), 
+                "title": Future.value("") }];
 
     }
 
@@ -68,44 +82,31 @@ class _GridSectionState extends State<GridSection> {
   Widget build(BuildContext context) {
 
     return Container(width: 342,
-                     child: GridView.count(crossAxisCount: 2,
-                                           crossAxisSpacing: 16,
-                                           mainAxisSpacing: 16,
-                                           shrinkWrap: true,
-                                           childAspectRatio: 163 / 187,
-                                           physics: NeverScrollableScrollPhysics(),
-                                           children: [PlaylistCard(image: image,
-                                                                   title: title),
-                                                      PlaylistCard(image: image,
-                                                                               title: title),
-                                                      PlaylistCard(image: image,
-                                                                               title: title),
-                                                      PlaylistCard(image: image,
-                                                                               title: title),
-                                                      PlaylistCard(image: image,
-                                                                               title: title),
-                                                      PlaylistCard(image: image,
-                                                                               title: title),
-                                                      PlaylistCard(image: image,
-                                                                               title: title),
-                                                      PlaylistCard(image: image,
-                                                                               title: title),
-                                                      PlaylistCard(image: image,
-                                                                               title: title),
-                                                      PlaylistCard(image: image,
-                                                                               title: title),
-                                                      PlaylistCard(image: image,
-                                                                               title: title),
-                                                      PlaylistCard(image: image,
-                                                                               title: title),
-                                                      PlaylistCard(image: image,
-                                                                               title: title),
-                                                      PlaylistCard(image: image,
-                                                                               title: title),
-                                                      PlaylistCard(image: image,
-                                                                               title: title),
-                                                      PlaylistCard(image: image,
-                                                                               title: title), ], ), );
+                     child: FutureBuilder<List<Map<String, Future<String>>>>(
+        future: fetchData(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Container(child: Center(child: CircularProgressIndicator()));
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else {
+            return GridView.count(
+              crossAxisCount: 2,
+              crossAxisSpacing: 16,
+              mainAxisSpacing: 16,
+              shrinkWrap: true,
+              childAspectRatio: 163 / 187,
+              physics: NeverScrollableScrollPhysics(),
+              children: snapshot.data!.map((playlist) {
+                return PlaylistCard(
+                  image: playlist["image"],
+                  title: playlist["title"],
+                );
+              }).toList(),
+            );
+          }
+        },
+      ), );
 
   }
 
