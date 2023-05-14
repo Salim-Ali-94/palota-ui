@@ -3,6 +3,7 @@ import 'package:flutter_spotify_africa_assessment/colors.dart';
 import 'package:flutter_spotify_africa_assessment/routes.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/components/header.dart';
+import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/components/grid_section.dart';
 
 
 // TODO: fetch and populate playlist info and allow for click-through to detail
@@ -52,10 +53,15 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
       ),
 
       body: SingleChildScrollView(physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                                  child: Container(padding: EdgeInsets.symmetric(vertical: 32), 
+                                  child: Container(padding: EdgeInsets.only(top: 32), 
+                                                   color: AppColors.black,
                                                    child: Column(children: [Row(mainAxisAlignment: MainAxisAlignment.end,
                                                                                 children: [Header(image: "assets/images/avatar.png",
-                                                                                                  category: 'Afro'), ], ), ], ), ), ),
+                                                                                                  category: 'Afro'), ], ), 
+                                                                                                  
+                                                                            SizedBox(height: 32),
+                                                                            
+                                                                            GridSection(),], ), ), ),
 
     );
   }
