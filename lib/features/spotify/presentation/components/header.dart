@@ -43,7 +43,7 @@ class Header extends StatelessWidget {
 
     } else {
 
-      return CircularProgressIndicator();
+      return Center(child: CircularProgressIndicator());
 
     }
 
@@ -58,7 +58,8 @@ class Header extends StatelessWidget {
                                                     
                      width: 366,
                      height: 72, 
-                     padding: EdgeInsets.symmetric(horizontal: 4),
+                     padding: EdgeInsets.symmetric(horizontal: 4, 
+                                                   vertical: 4),
                      
                      child: Row(children: [FutureBuilder<String>(future: image,
                                                                  builder: (context, snapshot) => imageBuilder(context, snapshot), ),

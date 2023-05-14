@@ -26,9 +26,11 @@ class SpotifyCategory extends StatefulWidget {
 class _SpotifyCategoryState extends State<SpotifyCategory> {
 
   String spotifyApiKey = dotenv.get('SPOTIFY_API_KEY', fallback: '');
-  String base = "https://palota-jobs-africa-spotify-fa.azurewebsites.net/api/browse/categories";
+  String base = "https://palota-jobs-africa-spotify-fa.azurewebsites.net/api/browse";
   Future<String>? image;
   Future<String>? category;
+
+  // https://palota-jobs-africa-spotify-fa.azurewebsites.net/api/browse/categories/afro/playlists?limit=1
 
   @override
   void initState() {
@@ -47,10 +49,9 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
 
   }
 
-
   Future<Map<String, String>> fetchData() async {
 
-    String endpoint = "$base/${widget.categoryId}";
+    String endpoint = "$base/categories/${widget.categoryId}";
     final response = await http.get(Uri.parse(endpoint), 
                                     headers: { 'x-functions-key': spotifyApiKey, }, );
 
@@ -73,6 +74,7 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.black,
       appBar: AppBar(
         title: const Text('Afro'),
         centerTitle: true,
@@ -98,15 +100,15 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
       ),
 
       body: SingleChildScrollView(physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                                  child: Container(padding: EdgeInsets.only(top: 32), 
+                                  child: Container(padding: EdgeInsets.symmetric(vertical: 32), 
                                                   //  color: AppColors.black,
                                                    child: Column(children: [Row(mainAxisAlignment: MainAxisAlignment.end,
                                                                                 children: [Header(image: image,
                                                                                                   category: category), ], ), 
                                                                                                   
-                                                                            SizedBox(height: 32),
-                                                                            
-                                                                            GridSection(),], ), ), ),
+                                                                                           SizedBox(height: 32),
+                                                                                          
+                                                                                           GridSection(), ], ), ), ),
 
     );
   }
