@@ -12,22 +12,6 @@ class Header extends StatelessWidget {
            required this.image,
            required this.category });
 
-  // Widget imageBuilder(context, snapshot) {
-
-  //   if (snapshot.connectionState == ConnectionState.done) {
-
-  //     final imageUrl = snapshot.data;
-  //     return ClipRRect(borderRadius: BorderRadius.circular(8), 
-  //                      child: Image.network(imageUrl!));
-
-  //   } else {
-
-  //     return CircularProgressIndicator();
-
-  //   }
-
-  // }
-
   Widget textBuilder(context, snapshot) {
 
     if (snapshot.connectionState == ConnectionState.done) {

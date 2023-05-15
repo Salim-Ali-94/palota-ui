@@ -29,7 +29,6 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
   String spotifyApiKey = dotenv.get('SPOTIFY_API_KEY', fallback: '');
   Future<String>? followers;
   List<Map<String, Future<String>>> tracks = [{"image": Future.value("")}];
-  // List<List<Future<String>>> musicians = [[Future.value("")]];  
   List<Future<String>> musicians = [Future.value("")];  
   
   @override
@@ -53,42 +52,36 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
       final data = jsonDecode(response.body);
       String number = formatNumber(data["followers"]["total"].toString()) + " followers";
       List<Map<String, Future<String>>> tracklist = [];
-      // List<List<Future<String>>> musicianList = [];
       List<Future<String>> musicianList = [];
       final allTracks = data["tracks"]["items"];
 
+
       for (int index = 0; index < allTracks.length; index++) {
 
-        String duration = formatDuration(allTracks[index]["track"]["duration_ms"]);
-        String image = allTracks[index]["track"]["album"]["images"][2]["url"];
-        String song = allTracks[index]["track"]["album"]["name"];
-        List artistCollection = allTracks[index]["track"]["album"]["artists"];
-        // List<Future<String>> artists = [];
-        final artists = [];
-        // Future<String> artists = '';
+        if (allTracks[index]["track"] != null) {
 
-        for (int element = 0; element < artistCollection.length; element++) {
+          String duration = formatDuration(allTracks[index]["track"]["duration_ms"]);
+          String image = allTracks[index]["track"]["album"]["images"][2]["url"];
+          String song = allTracks[index]["track"]["album"]["name"];
+          List artistCollection = allTracks[index]["track"]["album"]["artists"];
+          final artists = [];
 
-          // artists.add(Future.value(artistCollection[element]["name"]));
-          artists.add(artistCollection[element]["name"]);
-          // artists += Future.value(artistCollection[element]["name"]);
+          for (int element = 0; element < artistCollection.length; element++) {
+
+            artists.add(artistCollection[element]["name"]);
+
+          }
+
+          final joined = artists.join(", ");
+          musicianList.add(Future.value(joined));
+          tracklist.add({ "duration": Future.value(duration), 
+                          "image": Future.value(image),
+                          "song": Future.value(song), });
 
         }
 
-        // artists = 
-        // artists.add("liugyhasrbuierhgioerjhtgio;hliubhuighilugiluheiufghlui");
-        final joined = artists.join(", ");
-        // musicianList.add(artists);
-        musicianList.add(Future.value(joined));
-        // musicianList.add(artists.join(", "));
-
-        tracklist.add({ "duration": Future.value(duration), 
-                        "image": Future.value(image),
-                        "song": Future.value(song),
-                        });
-
       }
-      
+
       setState(() {
 
         followers = Future.value(number);
@@ -132,7 +125,6 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
                                                                                                      child: Row(children: [Expanded(child: FutureBuilder<String>(future: selectedPlaylist["description"],
                                                                                                                                                                  builder: (context, snapshot) => textBuilder(context, snapshot, 12.0, lines: 2), ), ), ], ), ), 
                                                                                                                 
-                                                                                                                
                                                                                            SizedBox(height: 4), 
                                                                                           
                                                                                            Container(padding: EdgeInsets.only(left: 195),
@@ -145,32 +137,12 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
                                                                                                      
                                                                                            SizedBox(height: 32), 
 
-                                                                                           Container(padding: EdgeInsets.symmetric(horizontal: 16), 
-                                                                                                     child: Column(children: this.tracks.asMap().entries.map((entry) {
-  int index = entry.key;
-  // Map<String, dynamic> map = entry.value;
-  // String name = map['name'];
-  // int age = map['age'];
-  
-  // return Text('Index: $index, Name: $name, Age: $age');
-  return [TracklistRow(track: tracks[index],
-                      artists: musicians[index]), (index != tracks.length - 1) ? SizedBox(height: 10) : SizedBox.shrink()];
-
-}).expand((i) => i).toList()
-                                                                                                     
-                                                                                                    //  [
-                                                                                                      // TracklistRow(track: tracks[0],
-                                                                                                      //              artists: musicians[0]),
-
-
-                                                                                                                  //  artists: musicians),
-
-                                                                                                      // TracklistRow(tracks: tracks[0],
-                                                                                                      //              artists: musicians), 
-                                                                                                                                           
-                                                                                                                                          //  ]
-                                                                                                                                           
-                                                                                                                                           ), ), ], ), ), ), );
+                                                                                           Container(padding: EdgeInsets.only(left: 16,
+                                                                                                                              right: 16,
+                                                                                                                              bottom: 32), 
+                                                                                                     child: Column(children: this.tracks.asMap().entries.map((entry) { int index = entry.key;
+                                                                                                                                                                        return [TracklistRow(track: tracks[index],
+                                                                                                                                                                                             artists: musicians[index]), (index != tracks.length - 1) ? SizedBox(height: 10) : SizedBox.shrink()]; }).expand((i) => i).toList() ), ), ], ), ), ), );
 
   }
 

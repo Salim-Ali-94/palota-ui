@@ -2,7 +2,7 @@ import "package:flutter/material.dart";
 import 'package:intl/intl.dart';
 
 
-Widget textBuilder(context, snapshot, size, { int lines = 1, bool bold = false }) {
+Widget textBuilder(context, snapshot, size, { int lines = 1, bool bold = false, rich = false }) {
 
   if (snapshot.connectionState == ConnectionState.done) {
 
@@ -31,7 +31,6 @@ Widget textBuilder(context, snapshot, size, { int lines = 1, bool bold = false }
 
 }
 
-
 Widget imageBuilder(context, snapshot, radius, { width = null, height = null }) {
 
   if (snapshot.connectionState == ConnectionState.done) {
@@ -59,28 +58,6 @@ Widget imageBuilder(context, snapshot, radius, { width = null, height = null }) 
   }
 
 }
-// Widget imageBuilder(
-//     BuildContext context, AsyncSnapshot<dynamic> snapshot, double radius) {
-//   if (snapshot.connectionState == ConnectionState.done) {
-//     final imageUrlFuture = snapshot.data! as Future<dynamic>?;
-//     return FutureBuilder<dynamic>(
-//       future: imageUrlFuture,
-//       builder: (context, AsyncSnapshot<dynamic> snapshot) {
-//         if (snapshot.connectionState == ConnectionState.done) {
-//           final imageUrl = snapshot.data as String?;
-//           return ClipRRect(
-//             borderRadius: BorderRadius.circular(radius),
-//             child: Image.network(imageUrl!),
-//           );
-//         } else {
-//           return Center(child: CircularProgressIndicator());
-//         }
-//       },
-//     );
-//   } else {
-//     return Center(child: CircularProgressIndicator());
-//   }
-// }
 
 String formatNumber(String numberString) {
 
