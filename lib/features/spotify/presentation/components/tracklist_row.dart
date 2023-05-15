@@ -23,7 +23,7 @@ class TracklistRow extends StatelessWidget {
 
                                                         Column(crossAxisAlignment : CrossAxisAlignment.start, 
                                                                children: [FutureBuilder<String>(future: this.tracks["song"],
-                                                builder: (context, snapshot) => textBuilder(context, snapshot, 12.0), ), FutureBuilder<String>(future: this.artists[0][0],
+                                                builder: (context, snapshot) => textBuilder(context, snapshot, 12.0, bold: true ), ), FutureBuilder<String>(future: this.artists[0][0],
                                                 builder: (context, snapshot) => textBuilder(context, snapshot, 12.0), ),], ), ], ), ), 
 
                           FutureBuilder<String>(future: this.tracks["duration"],

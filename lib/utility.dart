@@ -2,22 +2,19 @@ import "package:flutter/material.dart";
 import 'package:intl/intl.dart';
 
 
-Widget textBuilder(context, snapshot, size, { int lines = 1 }) {
+Widget textBuilder(context, snapshot, size, { int lines = 1, bool bold = false }) {
 
   if (snapshot.connectionState == ConnectionState.done) {
 
     final text = snapshot.data;
 
     if (text != null && text.isNotEmpty && text != "") {
-    // if (snapshot.data != "") {
-
-      // final text = snapshot.data;
 
       return Text(text,
                   maxLines: lines,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(fontSize: size,
-                                  fontWeight: FontWeight.bold, ), );
+                                   fontWeight: (bold == true) ? FontWeight.bold : FontWeight.normal, ), );
 
     } else {
       
