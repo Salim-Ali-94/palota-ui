@@ -8,6 +8,7 @@ import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/
 import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/components/followers_banner.dart';
 import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/components/section_divider.dart';
 import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/components/tracklist_row.dart';
+import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/components/featured_banner.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -108,9 +109,10 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
 
                     backgroundColor: AppColors.black,
                     body: SingleChildScrollView(physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                                                child: Container(child: Column(children: [Container(padding: EdgeInsets.only(left: 48,
-                                                                                                                             right: 48,
-                                                                                                                             top: 16), 
+                                                child: Container(padding: EdgeInsets.symmetric(vertical: 16),
+                                                                 child: Column(children: [Container(padding: EdgeInsets.only(left: 48,
+                                                                                                                             right: 48, ),
+                                                                                                                            //  top: 16, ), 
                                                                                                                 
                                                                                                     child: PlaylistCard(playlist: selectedPlaylist,
                                                                                                                         padding: 15,
@@ -138,11 +140,22 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
                                                                                            SizedBox(height: 32), 
 
                                                                                            Container(padding: EdgeInsets.only(left: 16,
-                                                                                                                              right: 16,
-                                                                                                                              bottom: 32), 
+                                                                                                                              right: 16, ), 
+                                                                                                                              // bottom: 32), 
                                                                                                      child: Column(children: this.tracks.asMap().entries.map((entry) { int index = entry.key;
                                                                                                                                                                         return [TracklistRow(track: tracks[index],
-                                                                                                                                                                                             artists: musicians[index]), (index != tracks.length - 1) ? SizedBox(height: 10) : SizedBox.shrink()]; }).expand((i) => i).toList() ), ), ], ), ), ), );
+                                                                                                                                                                                             artists: musicians[index]), (index != tracks.length - 1) ? SizedBox(height: 10) : SizedBox.shrink()]; }).expand((i) => i).toList() ), ), 
+                                                                                                                                                                                             
+                                                                                                                                                                                             
+
+                                                                                           SizedBox(height: 32),
+
+                                                                                           Container(padding: EdgeInsets.only(right: 48), 
+                                                                                                     child: FeaturedBanner(), ), 
+                                                                                                     
+                                                                                           SizedBox(height: 32),
+                                                                                           
+                                                                                           ], ), ), ), );
 
   }
 
