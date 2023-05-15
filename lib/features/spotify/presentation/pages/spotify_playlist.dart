@@ -76,7 +76,7 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
         }
 
         // artists = 
-        artists.add("liugyhasrbuierhgioerjhtgio;hliubhuighilugiluheiufghlui");
+        // artists.add("liugyhasrbuierhgioerjhtgio;hliubhuighilugiluheiufghlui");
         final joined = artists.join(", ");
         // musicianList.add(artists);
         musicianList.add(Future.value(joined));
@@ -146,14 +146,31 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
                                                                                            SizedBox(height: 32), 
 
                                                                                            Container(padding: EdgeInsets.symmetric(horizontal: 16), 
-                                                                                                     child: Column(children: [
-                                                                                                      TracklistRow(track: tracks[0],
-                                                                                                                   artists: musicians[0]),
+                                                                                                     child: Column(children: this.tracks.asMap().entries.map((entry) {
+  int index = entry.key;
+  // Map<String, dynamic> map = entry.value;
+  // String name = map['name'];
+  // int age = map['age'];
+  
+  // return Text('Index: $index, Name: $name, Age: $age');
+  return [TracklistRow(track: tracks[index],
+                      artists: musicians[index]), (index != tracks.length - 1) ? SizedBox(height: 10) : SizedBox.shrink()];
+
+}).expand((i) => i).toList()
+                                                                                                     
+                                                                                                    //  [
+                                                                                                      // TracklistRow(track: tracks[0],
+                                                                                                      //              artists: musicians[0]),
+
+
                                                                                                                   //  artists: musicians),
 
                                                                                                       // TracklistRow(tracks: tracks[0],
                                                                                                       //              artists: musicians), 
-                                                                                                                                           ]), ), ], ), ), ), );
+                                                                                                                                           
+                                                                                                                                          //  ]
+                                                                                                                                           
+                                                                                                                                           ), ), ], ), ), ), );
 
   }
 

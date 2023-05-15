@@ -24,14 +24,14 @@ class TracklistRow extends StatelessWidget {
                                                           SizedBox(width: 10),
 
                                                         Column(crossAxisAlignment : CrossAxisAlignment.start, 
-                                                               children: [FutureBuilder<String>(future: this.track["song"],
+                                                               children: [Container(constraints: BoxConstraints(maxWidth: 200), child: FutureBuilder<String>(future: this.track["song"],
                                                 // builder: (context, snapshot) => textBuilder(context, snapshot, 12.0, bold: true ), ), FutureBuilder<String>(future: this.artists[0][0],
                                                 // builder: (context, snapshot) => textBuilder(context, snapshot, 12.0, bold: true ), ), FutureBuilder<String>(future: Future.value(this.artists.join(', ')),
-                                                builder: (context, snapshot) => textBuilder(context, snapshot, 12.0, bold: true ), ), 
+                                                builder: (context, snapshot) => textBuilder(context, snapshot, 12.0, bold: true ), )), 
                                                 
-                                                Container(width: 100, child: FutureBuilder<String>(future: this.artists,
+                                                Container(constraints: BoxConstraints(maxWidth: 200), child: FutureBuilder<String>(future: this.artists,
                                                 // builder: (context, snapshot) => textBuilder(context, snapshot, 12.0, bold: true ), ), FutureBuilder<String>(future: this.artists[0],
-                                                builder: (context, snapshot) => textBuilder(context, snapshot, 12.0), )),], ), ], ), ), 
+                                                builder: (context, snapshot) => textBuilder(context, snapshot, 12.0), )), ], ), ], ), ), 
 
                           FutureBuilder<String>(future: this.track["duration"],
                                                 builder: (context, snapshot) => textBuilder(context, snapshot, 12.0), ),
