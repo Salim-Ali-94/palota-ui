@@ -9,6 +9,7 @@ import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/
 import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/components/section_divider.dart';
 import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/components/tracklist_row.dart';
 import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/components/featured_banner.dart';
+import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/components/artist_card.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -26,12 +27,15 @@ class SpotifyPlaylist extends StatefulWidget {
 //TODO: complete this page - you may choose to change it to a stateful widget if necessary
 class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
 
-  String base = "https://palota-jobs-africa-spotify-fa.azurewebsites.net/api/playlists";
+  // String base = "https://palota-jobs-africa-spotify-fa.azurewebsites.net/api/playlists";
+  String base = "https://palota-jobs-africa-spotify-fa.azurewebsites.net/api";
   String spotifyApiKey = dotenv.get('SPOTIFY_API_KEY', fallback: '');
   Future<String>? followers;
-  List<Map<String, Future<String>>> tracks = [{"image": Future.value("")}];
+  List<Map<String, Future<String>>> tracks = [{ "image": Future.value("") }];
   List<Future<String>> musicians = [Future.value("")];  
-  
+  // List<Future<String>> featuredArtists = [Future.value("")];  
+  List<Map<String, Future<String>>> featuredArtists = [{ "image": Future.value("") }];
+
   @override
   void initState() {
 
@@ -44,7 +48,8 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
 
     final selectedPlaylist = context.read<ScreenProvider>().selectedPlaylist;
     final id = await selectedPlaylist['identifier'];
-    String endpoint = "$base/$id";
+    // String endpoint = "$base/$id";
+    String endpoint = "$base/playlists/$id";
     final response = await http.get(Uri.parse(endpoint),
                                     headers: {'x-functions-key': spotifyApiKey}, );
 
@@ -55,7 +60,7 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
       List<Map<String, Future<String>>> tracklist = [];
       List<Future<String>> musicianList = [];
       final allTracks = data["tracks"]["items"];
-
+      List<Map<String, Future<String>>> artist_featured = [];
 
       for (int index = 0; index < allTracks.length; index++) {
 
@@ -66,15 +71,39 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
           String song = allTracks[index]["track"]["album"]["name"];
           List artistCollection = allTracks[index]["track"]["album"]["artists"];
           final artists = [];
+          final List<Map<String, Future<String>>> features = [];
 
           for (int element = 0; element < artistCollection.length; element++) {
 
             artists.add(artistCollection[element]["name"]);
+            // print("ID");
+            // print(artistCollection[element]['id']);
+            final String link = "$base/artists/${artistCollection[element]['id']}";
+            // print("LINK");
+            // print(link);
+            final request = await http.get(Uri.parse(link),
+                                           headers: {'x-functions-key': spotifyApiKey}, );
+            final payload = jsonDecode(request.body);
+            // print("PAYLOAD");
+            // print(payload);
+
+            if (payload.containsKey("images")) {
+
+              final photo = payload["images"][0]["url"];
+              features.add({ "name": Future.value(artistCollection[element]["name"]),
+                             "image": Future.value(photo) });
+
+            }
 
           }
 
           final joined = artists.join(", ");
           musicianList.add(Future.value(joined));
+          // features = features.toSet().toList();
+          // artist_featured = features.toSet().toList();
+          artist_featured.addAll(features.toSet().toList());
+          // print("FEATURES");
+          // print(features);
           tracklist.add({ "duration": Future.value(duration), 
                           "image": Future.value(image),
                           "song": Future.value(song), });
@@ -88,6 +117,7 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
         followers = Future.value(number);
         tracks = tracklist;
         musicians = musicianList;
+        featuredArtists = artist_featured;
 
       });
 
@@ -155,7 +185,8 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
                                                                                                      
                                                                                            SizedBox(height: 32),
                                                                                            
-                                                                                           ], ), ), ), );
+                                                                                           ArtistCard(image: featuredArtists[0]["image"],
+                                                                                                      name: featuredArtists[0]["name"],), ], ), ), ), );
 
   }
 
