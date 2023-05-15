@@ -29,7 +29,8 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
   String spotifyApiKey = dotenv.get('SPOTIFY_API_KEY', fallback: '');
   Future<String>? followers;
   List<Map<String, Future<String>>> tracks = [{"image": Future.value("")}];
-  List<List<Future<String>>> musicians = [[Future.value("")]];  
+  // List<List<Future<String>>> musicians = [[Future.value("")]];  
+  List<Future<String>> musicians = [Future.value("")];  
   
   @override
   void initState() {
@@ -52,7 +53,8 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
       final data = jsonDecode(response.body);
       String number = formatNumber(data["followers"]["total"].toString()) + " followers";
       List<Map<String, Future<String>>> tracklist = [];
-      List<List<Future<String>>> musicianList = [];
+      // List<List<Future<String>>> musicianList = [];
+      List<Future<String>> musicianList = [];
       final allTracks = data["tracks"]["items"];
 
       for (int index = 0; index < allTracks.length; index++) {
@@ -61,15 +63,23 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
         String image = allTracks[index]["track"]["album"]["images"][2]["url"];
         String song = allTracks[index]["track"]["album"]["name"];
         List artistCollection = allTracks[index]["track"]["album"]["artists"];
-        List<Future<String>> artists = [];
+        // List<Future<String>> artists = [];
+        final artists = [];
+        // Future<String> artists = '';
 
         for (int element = 0; element < artistCollection.length; element++) {
 
-          artists.add(Future.value(artistCollection[element]["name"]));
+          // artists.add(Future.value(artistCollection[element]["name"]));
+          artists.add(artistCollection[element]["name"]);
+          // artists += Future.value(artistCollection[element]["name"]);
 
         }
 
-        musicianList.add(artists);
+        // artists = 
+        final joined = artists.join(", ");
+        // musicianList.add(artists);
+        musicianList.add(Future.value(joined));
+        // musicianList.add(artists.join(", "));
 
         tracklist.add({ "duration": Future.value(duration), 
                         "image": Future.value(image),
@@ -136,8 +146,9 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
 
                                                                                            Container(padding: EdgeInsets.symmetric(horizontal: 16), 
                                                                                                      child: Column(children: [
-                                                                                                      TracklistRow(tracks: tracks[0],
-                                                                                                                   artists: musicians),
+                                                                                                      TracklistRow(track: tracks[0],
+                                                                                                                   artists: musicians[0]),
+                                                                                                                  //  artists: musicians),
 
                                                                                                       // TracklistRow(tracks: tracks[0],
                                                                                                       //              artists: musicians), 
