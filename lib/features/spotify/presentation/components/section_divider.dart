@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spotify_africa_assessment/colors.dart';
 
 
-class SectionDivier extends StatelessWidget {
+class SectionDivider extends StatelessWidget {
 
-  const SectionDivier({ super.key });
+  const SectionDivider({ super.key });
 
   @override
   Widget build(BuildContext context) {
