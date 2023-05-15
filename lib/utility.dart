@@ -32,7 +32,7 @@ Widget textBuilder(context, snapshot, size, { int lines = 1, bool bold = false }
 }
 
 
-Widget imageBuilder(context, snapshot, radius) {
+Widget imageBuilder(context, snapshot, radius, { width = null, height = null }) {
 
   if (snapshot.connectionState == ConnectionState.done) {
 
@@ -40,9 +40,10 @@ Widget imageBuilder(context, snapshot, radius) {
 
     if (url != null && url.isNotEmpty && url != "") {
 
-      // final imageUrl = snapshot.data;
       return ClipRRect(borderRadius: BorderRadius.circular(radius), 
-                        child: Image.network(url!));
+                        child: Image.network(url!,
+                                             width: null,
+                                             height: null));
 
     } else {
 

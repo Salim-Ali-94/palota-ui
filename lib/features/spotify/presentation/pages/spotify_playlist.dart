@@ -76,6 +76,7 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
         }
 
         // artists = 
+        artists.add("liugyhasrbuierhgioerjhtgio;hliubhuighilugiluheiufghlui");
         final joined = artists.join(", ");
         // musicianList.add(artists);
         musicianList.add(Future.value(joined));
