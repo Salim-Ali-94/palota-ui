@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:flutter_spotify_africa_assessment/colors.dart';
+import 'package:flutter_spotify_africa_assessment/utility.dart';
 
 
 class Header extends StatelessWidget {
@@ -11,21 +12,21 @@ class Header extends StatelessWidget {
            required this.image,
            required this.category });
 
-  Widget imageBuilder(context, snapshot) {
+  // Widget imageBuilder(context, snapshot) {
 
-    if (snapshot.connectionState == ConnectionState.done) {
+  //   if (snapshot.connectionState == ConnectionState.done) {
 
-      final imageUrl = snapshot.data;
-      return ClipRRect(borderRadius: BorderRadius.circular(8), 
-                       child: Image.network(imageUrl!));
+  //     final imageUrl = snapshot.data;
+  //     return ClipRRect(borderRadius: BorderRadius.circular(8), 
+  //                      child: Image.network(imageUrl!));
 
-    } else {
+  //   } else {
 
-      return CircularProgressIndicator();
+  //     return CircularProgressIndicator();
 
-    }
+  //   }
 
-  }
+  // }
 
   Widget textBuilder(context, snapshot) {
 
@@ -64,7 +65,7 @@ class Header extends StatelessWidget {
                                                    vertical: 4),
                      
                      child: Row(children: [FutureBuilder<String>(future: image,
-                                                                 builder: (context, snapshot) => imageBuilder(context, snapshot), ),
+                                                                 builder: (context, snapshot) => imageBuilder(context, snapshot, 8.0), ),
 
                                            SizedBox(width: 20),
                                             
