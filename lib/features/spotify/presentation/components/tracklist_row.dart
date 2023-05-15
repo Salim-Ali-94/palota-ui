@@ -16,11 +16,18 @@ class TracklistRow extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, 
-               children: [Container(child: FutureBuilder<String>(future: this.tracks["image"],
-                                                builder: (context, snapshot) => imageBuilder(context, snapshot, 12.0), ), ), 
+               children: [Container(child: Row(children: [FutureBuilder<String>(future: this.tracks["image"],
+                                                builder: (context, snapshot) => imageBuilder(context, snapshot, 8.0), ),
+                                                
+                                                          SizedBox(width: 10),
 
-                          FutureBuilder<String>(future: this.artists[0][0],
-                                                builder: (context, snapshot) => textBuilder(context, snapshot, 8.0), )
+                                                        Column(crossAxisAlignment : CrossAxisAlignment.start, 
+                                                               children: [FutureBuilder<String>(future: this.tracks["song"],
+                                                builder: (context, snapshot) => textBuilder(context, snapshot, 12.0), ), FutureBuilder<String>(future: this.artists[0][0],
+                                                builder: (context, snapshot) => textBuilder(context, snapshot, 12.0), ),], ), ], ), ), 
+
+                          FutureBuilder<String>(future: this.tracks["duration"],
+                                                builder: (context, snapshot) => textBuilder(context, snapshot, 12.0), ),
                                                 
                                                 ]);
 
