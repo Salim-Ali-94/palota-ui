@@ -30,9 +30,208 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
   String base = "https://palota-jobs-africa-spotify-fa.azurewebsites.net/api";
   String spotifyApiKey = dotenv.get('SPOTIFY_API_KEY', fallback: '');
   Future<String>? followers;
-  List<Map<String, Future<String>>> tracks = [{ "image": Future.value("") }];
-  List<Future<String>> musicians = [Future.value("")];  
+  // List<Map<String, Future<String>>> tracks = [{ "image": Future.value("") }];
+  // List<Future<String>> musicians = [Future.value("")];  
   List<Map<String, Future<String>>> featuredArtists = [{ "image": Future.value("") }];
+  String searchQuery = '';
+
+  // List<Map<String, Future<String>>> filteredTracks = [{ "image": Future.value("") }];
+  List<Future<String>> filteredMusicians = [Future.value("")]; 
+
+
+  List<Map<String, Future<String>>> tracks = [{ "image": Future.value(""),
+                                                "artists": Future.value("") }];
+  List<Future<String>> musicians = [Future.value("")];  
+  List<Map<String, Future<String>>> filteredTracks = [{ "image": Future.value(""),
+                                                "artists": Future.value("") }];
+ 
+// void filterTracksBySearchQuery(value) async {
+//   if (value.isNotEmpty) {
+//     final tracks_result = await Future.wait(filteredTracks.map((track) async {
+//       final String? song = await track["song"];
+//       return song?.toString().toLowerCase().contains(value.toLowerCase()) ?? false;
+//     }));
+
+//     final musicians_result = await Future.wait(filteredMusicians.map((singer) async {
+//       final String? singers = await singer;
+//       return singers?.toString().toLowerCase().contains(value.toLowerCase()) ?? false;
+//     }));
+
+//     setState(() {
+//       filteredTracks = tracks_result.where((result) => result).map((_) => filteredTracks[tracks_result.indexOf(_)]).toList().cast<Map<String, Future<String>>>();
+//       filteredMusicians = musicians_result.where((result) => result).map((_) => filteredMusicians[musicians_result.indexOf(_)]).toList().cast<Future<String>>();
+//     });
+//   } else {
+//     // Reset the filtered lists if the search query is empty
+//     setState(() {
+//       filteredTracks = List<Map<String, Future<String>>>.from(tracks);
+//       filteredMusicians = List<Future<String>>.from(musicians);
+//     });
+//   }
+// }
+
+ 
+// void filterTracksBySearchQuery(String value) async {
+//   if (value.isNotEmpty) {
+//     final tracks_result = await Future.wait(filteredTracks.map((track) async {
+//       final String? song = await track["song"];
+//       final String? artists = await track["artists"];
+//       return song?.toString().toLowerCase().contains(value.toLowerCase()) == true ||
+//           artists?.toString().toLowerCase().contains(value.toLowerCase()) == true;
+//     }));
+
+//     // final musicians_result = await Future.wait(filteredMusicians.map((singer) async {
+//     //   final String? singers = await singer;
+//     //   return singers?.toString().toLowerCase().contains(value.toLowerCase()) ?? false;
+//     // }));
+
+//     setState(() {
+//       filteredTracks = tracks_result
+//           .where((result) => result)
+//           .map((_) => filteredTracks[tracks_result.indexOf(_)])
+//           .toList()
+//           .cast<Map<String, Future<String>>>();
+
+//       // filteredMusicians = musicians_result
+//       //     .where((result) => result)
+//       //     .map((_) => filteredMusicians[musicians_result.indexOf(_)])
+//       //     .toList()
+//       //     .cast<Future<String>>();
+//     });
+//   } else {
+//     // Reset the filtered lists if the search query is empty
+//     setState(() {
+//       filteredTracks = List<Map<String, Future<String>>>.from(tracks);
+//       // filteredMusicians = List<Future<String>>.from(musicians);
+//     });
+//   }
+// }
+
+
+// void filterTracksBySearchQuery(String value) async {
+//   if (value.isNotEmpty) {
+//     final tracks_result = await Future.wait(filteredTracks.map((track) async {
+//       final String? song = await track["song"];
+//       final String? artists = await track["artists"];
+//       return song?.toString().toLowerCase().contains(value.toLowerCase()) == true ||
+//           artists?.toString().toLowerCase().contains(value.toLowerCase()) == true;
+//     }));
+
+//     setState(() {
+//       filteredTracks = tracks_result
+//           .where((result) => result)
+//           .map((_) => filteredTracks[tracks_result.indexOf(_)])
+//           .toList()
+//           .cast<Map<String, Future<String>>>();
+//     });
+//   } else {
+//     // Reset the filtered list if the search query is empty
+//     setState(() {
+//       filteredTracks = List<Map<String, Future<String>>>.from(tracks);
+//     });
+//   }
+// }
+void filterTracksBySearchQuery(String value) async {
+  if (value.isNotEmpty) {
+    final tracks_result = await Future.wait(filteredTracks.map((track) async {
+      final String? song = await track["song"];
+      final String? artists = await track["artists"];
+      return song?.toString().toLowerCase().contains(value.toLowerCase()) == true ||
+          artists?.toString().toLowerCase().contains(value.toLowerCase()) == true;
+    }));
+
+    setState(() {
+      filteredTracks = tracks_result
+          .asMap()
+          .entries
+          .where((entry) => entry.value)
+          .map((entry) => filteredTracks[entry.key])
+          .toList()
+          .cast<Map<String, Future<String>>>();
+    });
+  } else {
+    setState(() {
+      filteredTracks = List<Map<String, Future<String>>>.from(tracks);
+    });
+  }
+}
+
+
+//  void filterTracksBySearchQuery(value) {
+
+//   print("SEARCH");
+//   print(value);
+//   if (value.isNotEmpty) {
+//     final tracks_result = tracks.where((track) {
+//   print("TRACK");
+//   print(track);
+//       final String song = track["song"].toString().toLowerCase();
+//   print("SONG");
+//   print(song);
+//       return song.contains(value.toLowerCase());
+//     }).toList();
+
+//     final musicians_result = musicians.where((singer) {
+//       final String singers = singer.toString().toLowerCase();
+//       return singers.contains(value.toLowerCase());
+//     }).toList();
+
+//   print("RESULTS");
+//   print(musicians_result);
+//   print(tracks_result);
+
+//     setState(() {
+//       filteredTracks = tracks_result;
+//       filteredMusicians = musicians_result;
+//     });
+//   } else {
+//     // Reset the filtered lists if the search query is empty
+//     setState(() {
+//       filteredTracks = List.from(tracks);
+//       filteredMusicians = List.from(musicians);
+//     });
+//   }
+// }
+
+// void filterTracksBySearchQuery() {
+//   // final String searchQuery = context.read<ScreenProvider>().searchQuery;
+  
+//   // if (searchQuery.isEmpty) {
+//   //   return tracks;
+//   // }
+  
+//   // return tracks.where((track) {
+//   //   final String song = track["song"].toString().toLowerCase();
+//   //   final String artists = musicians[tracks.indexOf(track)].toString().toLowerCase();
+//   //   return song.contains(searchQuery.toLowerCase()) || artists.contains(searchQuery.toLowerCase());
+//   // }).toList();
+  
+//   if (searchQuery.isNotEmpty) {
+
+//     final tracks_result = tracks.where((track) {
+
+//       final String song = track["song"].toString().toLowerCase();
+//       return song.contains(searchQuery.toLowerCase());
+
+//     }).toList();
+
+//     final musicians_result = musicians.where((singer) {
+
+//       final String singers = musicians[musicians.indexOf(singer)].toString().toLowerCase();
+//       return singers.contains(searchQuery.toLowerCase());
+
+//     }).toList();
+
+//     setState(() {
+
+//       filteredTracks = tracks_result;
+//       filteredMusicians = musicians_result;
+
+//     });
+
+//   }
+
+//   }
 
   @override
   void initState() {
@@ -101,6 +300,7 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
           artist_featured.addAll(features);
           tracklist.add({ "duration": Future.value(duration), 
                           "image": Future.value(image),
+                          "artists": Future.value(joined),
                           "song": Future.value(song), });
 
         }
@@ -113,6 +313,9 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
         tracks = tracklist;
         musicians = musicianList;
         featuredArtists = artist_featured;
+
+        filteredMusicians = musicianList;
+        filteredTracks = tracklist;
 
       });
 
@@ -130,7 +333,33 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
     var selectedPlaylist = context.watch<ScreenProvider>().selectedPlaylist;
 
     return Scaffold(appBar: AppBar(backgroundColor: Colors.transparent,
-                                   elevation: 0), 
+                                   elevation: 0,
+                                   
+                                   actions: [
+          Container(width: 200, height: 50,
+            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: TextField(
+              onChanged: (value) {
+                // print(value);
+
+                // setState(() {
+                //   searchQuery = value;
+                // });
+                filterTracksBySearchQuery(value);
+              },
+              decoration: InputDecoration(
+                hintText: 'Search',
+                border: InputBorder.none,
+                prefixIcon: Icon(Icons.search),
+                contentPadding: EdgeInsets.all(12),
+              ),
+            ),
+          ),
+        ],), 
 
                     backgroundColor: AppColors.black,
                     body: SingleChildScrollView(physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
@@ -166,11 +395,26 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
                                                                                            Container(padding: EdgeInsets.only(left: 16,
                                                                                                                               right: 16, ), 
 
-                                                                                                     child: Column(children: this.tracks.asMap().entries.map((entry) { int index = entry.key;
-                                                                                                                                                                       return [TracklistRow(track: tracks[index],
-                                                                                                                                                                                            artists: musicians[index]), 
-
-                                                                                                                                                                               (index != tracks.length - 1) ? SizedBox(height: 10) : SizedBox.shrink()]; }).expand((element) => element).toList() ), ), 
+                                                                                                    //  child: Column(children: filterTracksBySearchQuery().asMap().entries.map(
+                                                                                                    //  child: Column(children: filteredTracks.asMap().entries.map(
+                                                                                                     child: Column(children: filteredTracks.map(
+                    (entry) {
+                      // int index = entry.key;
+                      return [
+                        TracklistRow(
+                          // track: filteredTracks[index],
+                          // artists: filteredMusicians[0],
+                          track: entry,
+                          // artists: tracks[index]["artists"],
+                        ),
+                        (entry != tracks[tracks.length - 1])
+                            ? SizedBox(height: 10)
+                            : SizedBox.shrink(),
+                      ];
+                    },
+                  ).expand((element) => element).toList(),
+                ),
+              ), 
                                                                                                                                                                                              
                                                                                                                                                                                              
 

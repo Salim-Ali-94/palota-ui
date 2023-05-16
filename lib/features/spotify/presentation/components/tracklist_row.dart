@@ -5,11 +5,11 @@ import 'package:flutter_spotify_africa_assessment/utility.dart';
 class TracklistRow extends StatelessWidget {
 
   Map<String, Future<String>> track;
-  Future<String> artists;
+  // Future<String> artists;
 
   TracklistRow({ super.key,
-                 required this.track,
-                 required this.artists });
+                 required this.track, });
+                //  required this.artists });
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class TracklistRow extends StatelessWidget {
                                                                        builder: (context, snapshot) => textBuilder(context, snapshot, 12.0, bold: true ), ), ), 
                                 
                                                              Container(constraints: BoxConstraints(maxWidth: 200), 
-                                                                       child: FutureBuilder<String>(future: this.artists,
+                                                                       child: FutureBuilder<String>(future: this.track["artists"],
                                                                                                     builder: (context, snapshot) => textBuilder(context, snapshot, 12.0), ), ), ], ), ], ), ), 
 
                                            FutureBuilder<String>(future: this.track["duration"],
