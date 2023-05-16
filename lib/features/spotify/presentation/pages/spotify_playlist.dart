@@ -170,21 +170,25 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
   Widget build(BuildContext context) {
 
     var selectedPlaylist = context.watch<ScreenProvider>().selectedPlaylist;
+    var screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(appBar: AppBar(backgroundColor: Colors.transparent,
                                    elevation: 0,
-                                   actions: [Container(width: 200, height: 35,
+                                   actions: [Container(width: screenWidth*0.5, height: 35,
                                                        margin: EdgeInsets.symmetric(vertical: 8, 
                                                                                     horizontal: 16),
 
                                                        decoration: BoxDecoration(color: Colors.white,
                                                                                  borderRadius: BorderRadius.circular(8), ),
 
-                                                      child: TextField(onChanged: (value) => filterSeach(value),
-                                                                       decoration: InputDecoration(hintText: 'Search',
-                                                                                                   border: InputBorder.none,
-                                                                                                   prefixIcon: Icon(Icons.search),
-                                                                                                   contentPadding: EdgeInsets.all(12), ), ), ), ], ), 
+                                                       child: TextField(onChanged: (value) => filterSeach(value),
+                                                                        decoration: InputDecoration(hintText: 'Search',
+                                                                                                    hintStyle: TextStyle(color: Colors.grey, ),
+                                                                                                    border: InputBorder.none,
+                                                                                                    prefixIcon: Padding(padding: EdgeInsets.symmetric(vertical: 8),
+                                                                                                                        child: Icon(Icons.search), ),
+                                                                                                                        
+                                                                                                    contentPadding: EdgeInsets.all(0), ), ), ), ], ), 
 
                     backgroundColor: AppColors.black,
                     body: SingleChildScrollView(physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
@@ -237,7 +241,7 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
                                                                                                                                                        image: featuredArtists[index]["image"],
                                                                                                                                                        name: featuredArtists[index]["name"], 
                                                                                                                                                        position: index, ); } ), ), ], ), ), ), );
-                                                                                                                                                       
+
   }
 
 }
