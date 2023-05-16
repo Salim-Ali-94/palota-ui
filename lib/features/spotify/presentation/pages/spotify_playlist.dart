@@ -187,7 +187,7 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
                                                                                                     border: InputBorder.none,
                                                                                                     prefixIcon: Padding(padding: EdgeInsets.symmetric(vertical: 8),
                                                                                                                         child: Icon(Icons.search), ),
-                                                                                                                        
+
                                                                                                     contentPadding: EdgeInsets.all(0), ), ), ), ], ), 
 
                     backgroundColor: AppColors.black,
@@ -224,8 +224,9 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
                                                                                            Container(padding: EdgeInsets.only(left: 16,
                                                                                                                               right: 16, ), 
                                                                                                      
-                                                                                                     child: Column(children: filteredTracks.map((entry) { return [TracklistRow(track: entry),
-                                                                                                                                                                  (entry != tracks[tracks.length - 1]) ? SizedBox(height: 10) : SizedBox.shrink(), ]; }, ).expand((element) => element).toList(), ), ),
+                                                                                                     child: Column(children: (filteredTracks.length == 0) ? [Container(width: screenWidth*0.9, 
+                                                                                                                                                                       child: Text("No tracks exist that match your search query"))] : filteredTracks.map((entry) { return [TracklistRow(track: entry),
+                                                                                                                                                                                                                                                                            (entry != tracks[tracks.length - 1]) ? SizedBox(height: 10) : SizedBox.shrink(), ]; }, ).expand((element) => element).toList(), ), ),
                                                                                                                                                                                                                                                             
                                                                                            SizedBox(height: 32),
 
