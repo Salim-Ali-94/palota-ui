@@ -10,11 +10,19 @@ Widget textBuilder(context, snapshot, size, { int lines = 1, bool bold = false, 
 
     if (text != null && text.isNotEmpty && text != "") {
 
-      return Text(text,
-                  maxLines: lines,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(fontSize: size,
-                                   fontWeight: (bold == true) ? FontWeight.bold : FontWeight.normal, ), );
+      return (rich == false) ? Text(text,
+                                    maxLines: lines,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(fontSize: size,
+                                                    fontWeight: (bold == true) ? FontWeight.bold : FontWeight.normal, ), ) :
+                              
+                               RichText(text: TextSpan(style: DefaultTextStyle.of(context).style,
+                                     children: <TextSpan>[TextSpan(text: text,
+                                                                   style: TextStyle(fontSize: size,
+                                                                                    fontWeight: FontWeight.bold, ), ),
+                                                          
+                                                          TextSpan(text: ' playlists',
+                                                                   style: TextStyle(fontSize: size, ), ), ], ), );
 
     } else {
       
@@ -41,12 +49,12 @@ Widget imageBuilder(context, snapshot, radius, { width = null, height = null }) 
 
       return ClipRRect(borderRadius: BorderRadius.circular(radius), 
                         child: Image.network(url!,
-                                             width: null,
-                                             height: null));
+                                             fit: BoxFit.cover,
+                                             width: width,
+                                             height: height));
 
     } else {
 
-        print("FUTURE IMG IS EMPTY");
         return Center(child: CircularProgressIndicator());
 
     }

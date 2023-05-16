@@ -180,9 +180,9 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
                                   physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                                   child: Container(padding: EdgeInsets.symmetric(vertical: 32), 
                                                   //  color: AppColors.black,
-                                                   child: Column(children: [Row(mainAxisAlignment: MainAxisAlignment.end,
+                                                   child: Column(children: [Container(padding: EdgeInsets.only(left: 24), child: Row(mainAxisAlignment: MainAxisAlignment.end,
                                                                                 children: [Header(image: image,
-                                                                                                  category: category), ], ), 
+                                                                                                  category: category), ], )), 
                                                                                                   
                                                                                            SizedBox(height: 32),
                                                                                           

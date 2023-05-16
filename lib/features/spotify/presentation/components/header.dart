@@ -1,4 +1,4 @@
-import "package:flutter/material.dart";
+import 'package:flutter/material.dart';
 import 'package:flutter_spotify_africa_assessment/colors.dart';
 import 'package:flutter_spotify_africa_assessment/utility.dart';
 
@@ -12,27 +12,27 @@ class Header extends StatelessWidget {
            required this.image,
            required this.category });
 
-  Widget textBuilder(context, snapshot) {
+  // Widget textBuilder(context, snapshot) {
 
-    if (snapshot.connectionState == ConnectionState.done) {
+  //   if (snapshot.connectionState == ConnectionState.done) {
 
-      final categoryName = snapshot.data;
+  //     final categoryName = snapshot.data;
 
-      return RichText(text: TextSpan(style: DefaultTextStyle.of(context).style,
-                                     children: <TextSpan>[TextSpan(text: categoryName,
-                                                                   style: TextStyle(fontSize: 28,
-                                                                                    fontWeight: FontWeight.bold, ), ),
+  //     return RichText(text: TextSpan(style: DefaultTextStyle.of(context).style,
+  //                                    children: <TextSpan>[TextSpan(text: categoryName,
+  //                                                                  style: TextStyle(fontSize: 28,
+  //                                                                                   fontWeight: FontWeight.bold, ), ),
                                                           
-                                                          TextSpan(text: ' playlists',
-                                                                   style: TextStyle(fontSize: 28, ), ), ], ), );
+  //                                                         TextSpan(text: ' playlists',
+  //                                                                  style: TextStyle(fontSize: 28, ), ), ], ), );
 
-    } else {
+  //   } else {
 
-      return Center(child: CircularProgressIndicator());
+  //     return Center(child: CircularProgressIndicator());
 
-    }
+  //   }
 
-  }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +43,8 @@ class Header extends StatelessWidget {
                                                     
                     //  width: double.infinity,
                     //  width: 366,
-                    margin: EdgeInsets.only(left: 24),
+                    
+                    // margin: EdgeInsets.only(left: 24),
                      height: 72, 
                      padding: EdgeInsets.symmetric(horizontal: 4, 
                                                    vertical: 4),
@@ -54,7 +55,7 @@ class Header extends StatelessWidget {
                                            SizedBox(width: 20),
                                             
                                            FutureBuilder<String>(future: category,
-                                                                  builder: (context, snapshot) => textBuilder(context, snapshot), ), ], ), ));
+                                                                  builder: (context, snapshot) => textBuilder(context, snapshot, 28.0, rich: true), ), ], ), ));
 
   }
 
