@@ -129,7 +129,7 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
 
     var selectedPlaylist = context.watch<ScreenProvider>().selectedPlaylist;
 
-    return Scaffold(appBar: AppBar(backgroundColor: AppColors.black,
+    return Scaffold(appBar: AppBar(backgroundColor: Colors.transparent,
                                    elevation: 0), 
 
                     backgroundColor: AppColors.black,

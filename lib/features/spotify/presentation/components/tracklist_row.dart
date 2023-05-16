@@ -14,10 +14,10 @@ class TracklistRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Container(height: 64, 
+    return Container(height: 72, 
                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, 
                                 children: [Container(child: Row(children: [FutureBuilder<String>(future: this.track["image"],
-                                                                                                 builder: (context, snapshot) => imageBuilder(context, snapshot, 8.0), ),
+                                                                                                 builder: (context, snapshot) => imageBuilder(context, snapshot, 8.0, width: 64.0, height: 64.0), ),
                                                 
                                            SizedBox(width: 10),
 
@@ -27,9 +27,9 @@ class TracklistRow extends StatelessWidget {
                                                                        child: FutureBuilder<String>(future: this.track["song"],
                                                                        builder: (context, snapshot) => textBuilder(context, snapshot, 12.0, bold: true ), ), ), 
                                 
-                                           Container(constraints: BoxConstraints(maxWidth: 200), 
-                                                     child: FutureBuilder<String>(future: this.artists,
-                                                                                  builder: (context, snapshot) => textBuilder(context, snapshot, 12.0), ), ), ], ), ], ), ), 
+                                                             Container(constraints: BoxConstraints(maxWidth: 200), 
+                                                                       child: FutureBuilder<String>(future: this.artists,
+                                                                                                    builder: (context, snapshot) => textBuilder(context, snapshot, 12.0), ), ), ], ), ], ), ), 
 
                                            FutureBuilder<String>(future: this.track["duration"],
                                                                  builder: (context, snapshot) => textBuilder(context, snapshot, 12.0), ), ], ), );
