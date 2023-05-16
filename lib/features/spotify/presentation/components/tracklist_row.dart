@@ -5,11 +5,9 @@ import 'package:flutter_spotify_africa_assessment/utility.dart';
 class TracklistRow extends StatelessWidget {
 
   Map<String, Future<String>> track;
-  // Future<String> artists;
 
   TracklistRow({ super.key,
                  required this.track, });
-                //  required this.artists });
 
   @override
   Widget build(BuildContext context) {
