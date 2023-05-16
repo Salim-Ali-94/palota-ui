@@ -30,9 +30,50 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
   String base = "https://palota-jobs-africa-spotify-fa.azurewebsites.net/api";
   String spotifyApiKey = dotenv.get('SPOTIFY_API_KEY', fallback: '');
   Future<String>? followers;
-  List<Map<String, Future<String>>> tracks = [{ "image": Future.value("") }];
-  List<Future<String>> musicians = [Future.value("")];  
-  List<Map<String, Future<String>>> featuredArtists = [{ "image": Future.value("") }];
+  List<Map<String, Future<String>>> featuredArtists = [{ "image": Future.value(""),
+                                                         "name": Future.value("") }];
+
+  List<Map<String, Future<String>>> tracks = [{ "image": Future.value(""),
+                                                "artists": Future.value("") }];
+
+  List<Map<String, Future<String>>> filteredTracks = [{ "image": Future.value(""),
+                                                        "artists": Future.value("") }];
+ 
+  void filterSeach(String value) async {
+
+    if (value.isNotEmpty) {
+
+      final tracks_result = await Future.wait(filteredTracks.map((track) async {
+
+        final String? song = await track["song"];
+        final String? artists = await track["artists"];
+        return song?.toString().toLowerCase().contains(value.toLowerCase()) == true ||
+               artists?.toString().toLowerCase().contains(value.toLowerCase()) == true;
+
+      }));
+
+      setState(() {
+
+        filteredTracks = tracks_result.asMap()
+                                      .entries
+                                      .where((entry) => entry.value)
+                                      .map((entry) => filteredTracks[entry.key])
+                                      .toList()
+                                      .cast<Map<String, Future<String>>>();
+
+      });
+
+    } else {
+
+      setState(() {
+
+        filteredTracks = List<Map<String, Future<String>>>.from(tracks);
+
+      });
+
+    }
+
+  }
 
   @override
   void initState() {
@@ -55,7 +96,6 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
       final data = jsonDecode(response.body);
       String number = formatNumber(data["followers"]["total"].toString()) + " followers";
       List<Map<String, Future<String>>> tracklist = [];
-      List<Future<String>> musicianList = [];
       final allTracks = data["tracks"]["items"];
       List<Map<String, Future<String>>> artist_featured = [];
       List<String> allArtists = [];
@@ -75,8 +115,10 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
 
             artists.add(artistCollection[element]["name"]);
             final String link = "$base/artists/${artistCollection[element]['id']}";
+
             final request = await http.get(Uri.parse(link),
                                            headers: {'x-functions-key': spotifyApiKey}, );
+
             final payload = jsonDecode(request.body);
 
             if (payload.containsKey("images")) {
@@ -97,10 +139,10 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
           }
 
           final joined = artists.join(", ");
-          musicianList.add(Future.value(joined));
           artist_featured.addAll(features);
           tracklist.add({ "duration": Future.value(duration), 
                           "image": Future.value(image),
+                          "artists": Future.value(joined),
                           "song": Future.value(song), });
 
         }
@@ -111,8 +153,8 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
 
         followers = Future.value(number);
         tracks = tracklist;
-        musicians = musicianList;
         featuredArtists = artist_featured;
+        filteredTracks = tracklist;
 
       });
 
@@ -128,9 +170,25 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
   Widget build(BuildContext context) {
 
     var selectedPlaylist = context.watch<ScreenProvider>().selectedPlaylist;
+    var screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(appBar: AppBar(backgroundColor: Colors.transparent,
-                                   elevation: 0), 
+                                   elevation: 0,
+                                   actions: [Container(width: screenWidth*0.5, height: 35,
+                                                       margin: EdgeInsets.symmetric(vertical: 8, 
+                                                                                    horizontal: 16),
+
+                                                       decoration: BoxDecoration(color: Colors.white,
+                                                                                 borderRadius: BorderRadius.circular(8), ),
+
+                                                       child: TextField(onChanged: (value) => filterSeach(value),
+                                                                        decoration: InputDecoration(hintText: 'Search',
+                                                                                                    hintStyle: TextStyle(color: Colors.grey, ),
+                                                                                                    border: InputBorder.none,
+                                                                                                    prefixIcon: Padding(padding: EdgeInsets.symmetric(vertical: 8),
+                                                                                                                        child: Icon(Icons.search), ),
+
+                                                                                                    contentPadding: EdgeInsets.all(0), ), ), ), ], ), 
 
                     backgroundColor: AppColors.black,
                     body: SingleChildScrollView(physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
@@ -165,15 +223,11 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
 
                                                                                            Container(padding: EdgeInsets.only(left: 16,
                                                                                                                               right: 16, ), 
-
-                                                                                                     child: Column(children: this.tracks.asMap().entries.map((entry) { int index = entry.key;
-                                                                                                                                                                       return [TracklistRow(track: tracks[index],
-                                                                                                                                                                                            artists: musicians[index]), 
-
-                                                                                                                                                                               (index != tracks.length - 1) ? SizedBox(height: 10) : SizedBox.shrink()]; }).expand((element) => element).toList() ), ), 
-                                                                                                                                                                                             
-                                                                                                                                                                                             
-
+                                                                                                     
+                                                                                                     child: Column(children: (filteredTracks.length == 0) ? [Container(width: screenWidth*0.9, 
+                                                                                                                                                                       child: Text("No tracks exist that match your search query"))] : filteredTracks.map((entry) { return [TracklistRow(track: entry),
+                                                                                                                                                                                                                                                                            (entry != tracks[tracks.length - 1]) ? SizedBox(height: 10) : SizedBox.shrink(), ]; }, ).expand((element) => element).toList(), ), ),
+                                                                                                                                                                                                                                                            
                                                                                            SizedBox(height: 32),
 
                                                                                            Container(padding: EdgeInsets.only(right: 48), 
@@ -188,6 +242,7 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
                                                                                                                                                        image: featuredArtists[index]["image"],
                                                                                                                                                        name: featuredArtists[index]["name"], 
                                                                                                                                                        position: index, ); } ), ), ], ), ), ), );
+
   }
 
 }
