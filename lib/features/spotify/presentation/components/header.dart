@@ -16,8 +16,12 @@ class Header extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Expanded(child: Container(decoration: BoxDecoration(color: AppColors.grey,
-                                               borderRadius: BorderRadius.only(topLeft: Radius.circular(12), 
-                                                                               bottomLeft: Radius.circular(12), ), ),
+                                                              boxShadow: [BoxShadow(color: AppColors.grey.withOpacity(0.2), // Shadow color
+                                                                                    blurRadius: 6, // Spread radius
+                                                                                    offset: Offset(4, 4), ), ],
+
+                                                              borderRadius: BorderRadius.only(topLeft: Radius.circular(12), 
+                                                                                              bottomLeft: Radius.circular(12), ), ),
                                                     
                     // margin: EdgeInsets.only(left: 24),
                      height: 72, 

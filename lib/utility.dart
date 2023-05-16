@@ -14,7 +14,7 @@ Widget textBuilder(context, snapshot, size, { int lines = 1, bool bold = false, 
                                     maxLines: lines,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(fontSize: size,
-                                                    fontWeight: (bold == true) ? FontWeight.bold : FontWeight.normal, ), ) :
+                                                     fontWeight: (bold == true) ? FontWeight.w600 : FontWeight.normal, ), ) :
                               
                                RichText(text: TextSpan(style: DefaultTextStyle.of(context).style,
                                      children: <TextSpan>[TextSpan(text: text,

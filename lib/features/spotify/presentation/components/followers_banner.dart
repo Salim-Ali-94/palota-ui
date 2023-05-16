@@ -21,7 +21,7 @@ class FollowersBanner extends StatelessWidget {
                                                                                
                      child: Row(mainAxisAlignment: MainAxisAlignment.end,
                                 children: [FutureBuilder<String>(future: this.followers,
-                                                                 builder: (context, snapshot) => textBuilder(context, snapshot, 11.0), ),], ), );
+                                                                 builder: (context, snapshot) => textBuilder(context, snapshot, 11.0, bold: true), ),], ), );
 
   }
 

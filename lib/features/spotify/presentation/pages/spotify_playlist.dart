@@ -37,27 +37,70 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
   List<Map<String, Future<String>>> filteredTracks = [{ "image": Future.value(""),
                                                         "artists": Future.value("") }];
  
-  void filterSeach(String value) async {
+  // void filterSearch(String value) async {
+
+  //   if (value.isNotEmpty) {
+
+  //     final tracks_result = await Future.wait(filteredTracks.map((track) async {
+
+  //       final String? song = await track["song"];
+  //       final String? artists = await track["artists"];
+  //       return song?.toString().toLowerCase().contains(value.toLowerCase()) == true ||
+  //              artists?.toString().toLowerCase().contains(value.toLowerCase()) == true;
+
+  //     }));
+
+  //     setState(() {
+
+  //       filteredTracks = tracks_result.asMap()
+  //                                     .entries
+  //                                     .where((entry) => entry.value)
+  //                                     .map((entry) => filteredTracks[entry.key])
+  //                                     .toList()
+  //                                     .cast<Map<String, Future<String>>>();
+
+  //     });
+
+  //   } else {
+
+  //     setState(() {
+
+  //       filteredTracks = List<Map<String, Future<String>>>.from(tracks);
+
+  //     });
+
+  //   }
+
+  // }
+  void filterSearch(String value) async {
 
     if (value.isNotEmpty) {
 
-      final tracks_result = await Future.wait(filteredTracks.map((track) async {
+      final List<Map<String, Future<String>>> filtered = [];
+
+      for (final track in tracks) {
 
         final String? song = await track["song"];
         final String? artists = await track["artists"];
-        return song?.toString().toLowerCase().contains(value.toLowerCase()) == true ||
-               artists?.toString().toLowerCase().contains(value.toLowerCase()) == true;
 
-      }));
+        if (song != null && artists != null) {
+
+          final songMatch = song.toLowerCase().contains(value.toLowerCase());
+          final artistMatch = artists.toLowerCase().contains(value.toLowerCase());
+
+          if (songMatch || artistMatch) {
+
+            filtered.add(track);
+
+          }
+
+        }
+
+      }
 
       setState(() {
 
-        filteredTracks = tracks_result.asMap()
-                                      .entries
-                                      .where((entry) => entry.value)
-                                      .map((entry) => filteredTracks[entry.key])
-                                      .toList()
-                                      .cast<Map<String, Future<String>>>();
+        filteredTracks = filtered;
 
       });
 
@@ -179,7 +222,7 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
                                                        decoration: BoxDecoration(color: Colors.white,
                                                                                  borderRadius: BorderRadius.circular(8), ),
 
-                                                       child: TextField(onChanged: (value) => filterSeach(value),
+                                                       child: TextField(onChanged: (value) => filterSearch(value),
                                                                         style: TextStyle(color: Colors.black),
                                                                         decoration: InputDecoration(hintText: 'Search',
                                                                                                     hintStyle: TextStyle(color: Colors.grey, ),
@@ -199,6 +242,7 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
                                                                                                                         padding: 15,
                                                                                                                         gap: 14,
                                                                                                                         size: 22,
+                                                                                                                        bold: false,
                                                                                                                         innerRadius: 12,
                                                                                                                         outerRadius: 24, ), ), 
                                                                                                            
@@ -206,7 +250,7 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
                                                                                           
                                                                                            Container(padding: EdgeInsets.symmetric(horizontal: 16),
                                                                                                      child: Row(children: [Expanded(child: FutureBuilder<String>(future: selectedPlaylist["description"],
-                                                                                                                                                                 builder: (context, snapshot) => textBuilder(context, snapshot, 12.0, lines: 2), ), ), ], ), ), 
+                                                                                                                                                                 builder: (context, snapshot) => textBuilder(context, snapshot, 12.0, lines: 2, bold: true), ), ), ], ), ), 
                                                                                                                 
                                                                                            SizedBox(height: 4), 
                                                                                           

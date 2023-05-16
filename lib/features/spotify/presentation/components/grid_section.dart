@@ -29,6 +29,7 @@ class GridSection extends StatelessWidget {
                                                                                                                     gap: 4,
                                                                                                                     size: 12,
                                                                                                                     innerRadius: 8,
+                                                                                                                    bold: true,
                                                                                                                     outerRadius: 12), ).toList(), ), );
   }
 

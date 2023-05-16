@@ -27,7 +27,7 @@ class ArtistCard extends StatelessWidget {
                                                                     builder: (context, snapshot) => imageBuilder(context, snapshot, 32.0, width: 120.0, height: 120.0), ), 
 
                                               FutureBuilder<String>(future: name,
-                                                                    builder: (context, snapshot) => textBuilder(context, snapshot, 12.0), ), ], ), );
+                                                                    builder: (context, snapshot) => textBuilder(context, snapshot, 12.0, bold: true), ), ], ), );
 
   }
 

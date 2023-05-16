@@ -14,6 +14,7 @@ class PlaylistCard extends StatefulWidget {
   late double innerRadius;
   late double outerRadius;
   late double size;
+  late bool bold;
   
   PlaylistCard({ super.key,
                  required this.gap,
@@ -21,6 +22,7 @@ class PlaylistCard extends StatefulWidget {
                  required this.size,
                  required this.innerRadius,
                  required this.outerRadius,
+                 required this.bold,
                  required this.playlist, });
 
   @override
@@ -53,7 +55,7 @@ class _PlaylistCardState extends State<PlaylistCard> {
                                                                      SizedBox(height: widget.gap),
 
                                                                      FutureBuilder<String>(future: widget.playlist["title"],
-                                                                                           builder: (context, snapshot) => textBuilder(context, snapshot, widget.size), ), ], ), ), );
+                                                                                           builder: (context, snapshot) => textBuilder(context, snapshot, widget.size, bold: widget.bold), ), ], ), ), );
 
   }
 
