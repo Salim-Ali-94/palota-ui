@@ -19,18 +19,15 @@ class ArtistCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return Container(
-      height: 143,
+    return Container(height: 143,
                      width: 120,
-                    //  margin: EdgeInsets.only(right: this.gap),
                      margin: (this.position == 0) ? EdgeInsets.only(left: this.gap, right: this.gap) : EdgeInsets.only(right: this.gap),
                      child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                    children: [FutureBuilder<String>(future: this.image,
-                                                                                     builder: (context, snapshot) => imageBuilder(context, snapshot, 32.0, width: 120.0, height: 120.0), ), 
-                                              // SizedBox(height: 8),
-                                              
+                                                                    builder: (context, snapshot) => imageBuilder(context, snapshot, 32.0, width: 120.0, height: 120.0), ), 
+
                                               FutureBuilder<String>(future: name,
-                                                                  builder: (context, snapshot) => textBuilder(context, snapshot, 12.0), ), ], ), );
+                                                                    builder: (context, snapshot) => textBuilder(context, snapshot, 12.0), ), ], ), );
 
   }
 

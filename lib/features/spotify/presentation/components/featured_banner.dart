@@ -18,7 +18,7 @@ class FeaturedBanner extends StatelessWidget {
                      child: Row(children: [Expanded(child: Text("Featured Artists", 
                                                                 maxLines: 1,
                                                                 overflow: TextOverflow.ellipsis,
-                                                                style: TextStyle(fontSize: 22), )), ]), );
+                                                                style: TextStyle(fontSize: 22), ), ), ], ), );
 
   }
 

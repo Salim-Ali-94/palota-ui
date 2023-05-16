@@ -55,7 +55,6 @@ Widget imageBuilder(context, snapshot, radius, { width = null, height = null }) 
 
     } else {
 
-        print("FUTURE IMG IS EMPTY");
         return Center(child: CircularProgressIndicator());
 
     }
