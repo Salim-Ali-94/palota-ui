@@ -7,9 +7,13 @@ class ArtistCard extends StatelessWidget {
 
   late Future<String>? image;
   late Future<String>? name;
+  late double gap;
+  late int position;
 
   ArtistCard({ super.key,
                required this.image,
+               required this.gap,
+               required this.position,
                required this.name });
 
   @override
@@ -18,6 +22,8 @@ class ArtistCard extends StatelessWidget {
     return Container(
       height: 143,
                      width: 120,
+                    //  margin: EdgeInsets.only(right: this.gap),
+                     margin: (this.position == 0) ? EdgeInsets.only(left: this.gap, right: this.gap) : EdgeInsets.only(right: this.gap),
                      child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                    children: [FutureBuilder<String>(future: this.image,
                                                                                      builder: (context, snapshot) => imageBuilder(context, snapshot, 32.0, width: 120.0, height: 120.0), ), 

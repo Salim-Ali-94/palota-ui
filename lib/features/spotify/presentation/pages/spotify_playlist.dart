@@ -61,6 +61,7 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
       List<Future<String>> musicianList = [];
       final allTracks = data["tracks"]["items"];
       List<Map<String, Future<String>>> artist_featured = [];
+      List<String> allArtists = [];
 
       for (int index = 0; index < allTracks.length; index++) {
 
@@ -71,6 +72,7 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
           String song = allTracks[index]["track"]["album"]["name"];
           List artistCollection = allTracks[index]["track"]["album"]["artists"];
           final artists = [];
+          // final List<String> allArtists = [];
           final List<Map<String, Future<String>>> features = [];
 
           for (int element = 0; element < artistCollection.length; element++) {
@@ -90,8 +92,15 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
             if (payload.containsKey("images")) {
 
               final photo = payload["images"][0]["url"];
-              features.add({ "name": Future.value(artistCollection[element]["name"]),
-                             "image": Future.value(photo) });
+
+              if (allArtists.contains(artistCollection[element]["name"]) == false) {
+
+                features.add({ "name": Future.value(artistCollection[element]["name"]),
+                               "image": Future.value(photo) });
+
+                allArtists.add(artistCollection[element]["name"]);
+
+              }
 
             }
 
@@ -101,7 +110,8 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
           musicianList.add(Future.value(joined));
           // features = features.toSet().toList();
           // artist_featured = features.toSet().toList();
-          artist_featured.addAll(features.toSet().toList());
+          // artist_featured.addAll(features.toSet().toList());
+          artist_featured.addAll(features);
           // print("FEATURES");
           // print(features);
           tracklist.add({ "duration": Future.value(duration), 
@@ -111,6 +121,8 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
         }
 
       }
+
+      // artist_featured = artist_featured.toSet().toList();
 
       setState(() {
 
@@ -185,9 +197,16 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
                                                                                                      
                                                                                            SizedBox(height: 32),
                                                                                            
-                                                                                           ArtistCard(image: featuredArtists[0]["image"],
-                                                                                                      name: featuredArtists[0]["name"],), ], ), ), ), );
-
+                                                                                          //  Container(padding: EdgeInsets.only(left: 32), child: Row(children: [ArtistCard(image: featuredArtists[0]["image"],
+                                                                                          //             name: featuredArtists[0]["name"],)])), ], ), ), ), );
+                                                                                          //  Container(padding: EdgeInsets.symmetric(horizontal: 32), 
+                                                                                          //  Container(margin: EdgeInsets.symmetric(horizontal: 32), 
+                                                                                           Container( 
+                                                                                           height: 143, child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: featuredArtists.length,
+          itemBuilder: (context, index) { return ArtistCard(gap: (index == featuredArtists.length - 1) ? 32 : 32, image: featuredArtists[index]["image"],
+                                                                                                      name: featuredArtists[index]["name"], position: index, );})), ], ), ), ), );
   }
 
 }

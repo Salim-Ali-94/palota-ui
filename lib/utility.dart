@@ -49,8 +49,9 @@ Widget imageBuilder(context, snapshot, radius, { width = null, height = null }) 
 
       return ClipRRect(borderRadius: BorderRadius.circular(radius), 
                         child: Image.network(url!,
-                                             width: null,
-                                             height: null));
+                                             fit: BoxFit.cover,
+                                             width: width,
+                                             height: height));
 
     } else {
 
