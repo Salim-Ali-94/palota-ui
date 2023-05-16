@@ -12,7 +12,7 @@ import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/
 import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/components/artist_card.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_spotify_africa_assessment/constants.dart';
 
 
 class SpotifyPlaylist extends StatefulWidget {
@@ -27,8 +27,6 @@ class SpotifyPlaylist extends StatefulWidget {
 //TODO: complete this page - you may choose to change it to a stateful widget if necessary
 class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
 
-  String base = "https://palota-jobs-africa-spotify-fa.azurewebsites.net/api";
-  String spotifyApiKey = dotenv.get('SPOTIFY_API_KEY', fallback: '');
   Future<String>? followers;
   List<Map<String, Future<String>>> featuredArtists = [{ "image": Future.value(""),
                                                          "name": Future.value("") }];
@@ -87,7 +85,7 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
 
     final selectedPlaylist = context.read<ScreenProvider>().selectedPlaylist;
     final id = await selectedPlaylist['identifier'];
-    String endpoint = "$base/playlists/$id";
+    String endpoint = "$spotifyBaseUrl/playlists/$id";
     final response = await http.get(Uri.parse(endpoint),
                                     headers: {'x-functions-key': spotifyApiKey}, );
 
@@ -114,7 +112,7 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
           for (int element = 0; element < artistCollection.length; element++) {
 
             artists.add(artistCollection[element]["name"]);
-            final String link = "$base/artists/${artistCollection[element]['id']}";
+            final String link = "$spotifyBaseUrl/artists/${artistCollection[element]['id']}";
 
             final request = await http.get(Uri.parse(link),
                                            headers: {'x-functions-key': spotifyApiKey}, );
@@ -122,10 +120,10 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
             final payload = jsonDecode(request.body);
 
             if (payload.containsKey("images")) {
-
-              final photo = payload["images"][0]["url"];
-
+              
               if (allArtists.contains(artistCollection[element]["name"]) == false) {
+
+                final photo = (payload["images"].length > 0) ? payload["images"][0]["url"] : "https://icons-for-free.com/iconfiles/png/128/music+round+icon+spotify+icon-1320190507294268936.png";
 
                 features.add({ "name": Future.value(artistCollection[element]["name"]),
                                "image": Future.value(photo) });
@@ -182,6 +180,7 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
                                                                                  borderRadius: BorderRadius.circular(8), ),
 
                                                        child: TextField(onChanged: (value) => filterSeach(value),
+                                                                        style: TextStyle(color: Colors.black),
                                                                         decoration: InputDecoration(hintText: 'Search',
                                                                                                     hintStyle: TextStyle(color: Colors.grey, ),
                                                                                                     border: InputBorder.none,
@@ -225,8 +224,9 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
                                                                                                                               right: 16, ), 
                                                                                                      
                                                                                                      child: Column(children: (filteredTracks.length == 0) ? [Container(width: screenWidth*0.9, 
-                                                                                                                                                                       child: Text("No tracks exist that match your search query"))] : filteredTracks.map((entry) { return [TracklistRow(track: entry),
-                                                                                                                                                                                                                                                                            (entry != tracks[tracks.length - 1]) ? SizedBox(height: 10) : SizedBox.shrink(), ]; }, ).expand((element) => element).toList(), ), ),
+                                                                                                                                                                       child: Text("No tracks exist that match your search query",
+                                                                                                                                                                                   style: TextStyle(fontWeight: FontWeight.bold, ), ), ), ] : filteredTracks.map((entry) { return [TracklistRow(track: entry),
+                                                                                                                                                                                                                                                                                   (entry != tracks[tracks.length - 1]) ? SizedBox(height: 10) : SizedBox.shrink(), ]; }, ).expand((element) => element).toList(), ), ),
                                                                                                                                                                                                                                                             
                                                                                            SizedBox(height: 32),
 

@@ -26,7 +26,6 @@ Widget textBuilder(context, snapshot, size, { int lines = 1, bool bold = false, 
 
     } else {
       
-        print("FUTURE TEXT IS EMPTY");
         return CircularProgressIndicator();
 
     }

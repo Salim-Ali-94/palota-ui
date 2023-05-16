@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spotify_africa_assessment/colors.dart';
 import 'package:flutter_spotify_africa_assessment/routes.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_spotify_africa_assessment/constants.dart';
 import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/components/header.dart';
 import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/components/grid_section.dart';
 import "package:http/http.dart" as http;
@@ -28,8 +28,6 @@ class SpotifyCategory extends StatefulWidget {
 
 class _SpotifyCategoryState extends State<SpotifyCategory> {
 
-  String spotifyApiKey = dotenv.get('SPOTIFY_API_KEY', fallback: '');
-  String base = "https://palota-jobs-africa-spotify-fa.azurewebsites.net/api/browse";
   List<Map<String, Future<String>>> playlists = [];
   ScrollController _scrollController = ScrollController();
   Future<String>? image;
@@ -50,7 +48,7 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
 
   Future<void> fetchData() async {
 
-    String endpoint = "$base/categories/${widget.categoryId}";
+    String endpoint = "$spotifyBaseUrl/browse/categories/${widget.categoryId}";
     final response = await http.get(Uri.parse(endpoint),
                                     headers: {'x-functions-key': spotifyApiKey}, );
 
@@ -77,7 +75,7 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
 
   Future<void> fetchPlaylist() async {
 
-    String endpoint = "$base/categories/${widget.categoryId}/playlists?limit=$limit&offset=$page";
+    String endpoint = "$spotifyBaseUrl/browse/categories/${widget.categoryId}/playlists?limit=$limit&offset=$page";
     final response = await http.get(Uri.parse(endpoint),
                                     headers: {'x-functions-key': spotifyApiKey}, );
 
