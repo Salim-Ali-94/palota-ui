@@ -13,6 +13,7 @@ import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_spotify_africa_assessment/constants.dart';
+import 'package:hive/hive.dart';
 
 
 class SpotifyPlaylist extends StatefulWidget {
@@ -28,6 +29,7 @@ class SpotifyPlaylist extends StatefulWidget {
 class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
 
   Future<String>? followers;
+  final _box = Hive.box("collection");
   List<Map<String, Future<String>>> featuredArtists = [{ "image": Future.value(""),
                                                          "name": Future.value("") }];
 
@@ -36,91 +38,33 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
 
   List<Map<String, Future<String>>> filteredTracks = [{ "image": Future.value(""),
                                                         "artists": Future.value("") }];
- 
-  // void filterSearch(String value) async {
-
-  //   if (value.isNotEmpty) {
-
-  //     final tracks_result = await Future.wait(filteredTracks.map((track) async {
-
-  //       final String? song = await track["song"];
-  //       final String? artists = await track["artists"];
-  //       return song?.toString().toLowerCase().contains(value.toLowerCase()) == true ||
-  //              artists?.toString().toLowerCase().contains(value.toLowerCase()) == true;
-
-  //     }));
-
-  //     setState(() {
-
-  //       filteredTracks = tracks_result.asMap()
-  //                                     .entries
-  //                                     .where((entry) => entry.value)
-  //                                     .map((entry) => filteredTracks[entry.key])
-  //                                     .toList()
-  //                                     .cast<Map<String, Future<String>>>();
-
-  //     });
-
-  //   } else {
-
-  //     setState(() {
-
-  //       filteredTracks = List<Map<String, Future<String>>>.from(tracks);
-
-  //     });
-
-  //   }
-
-  // }
-  void filterSearch(String value) async {
-
-    if (value.isNotEmpty) {
-
-      final List<Map<String, Future<String>>> filtered = [];
-
-      for (final track in tracks) {
-
-        final String? song = await track["song"];
-        final String? artists = await track["artists"];
-
-        if (song != null && artists != null) {
-
-          final songMatch = song.toLowerCase().contains(value.toLowerCase());
-          final artistMatch = artists.toLowerCase().contains(value.toLowerCase());
-
-          if (songMatch || artistMatch) {
-
-            filtered.add(track);
-
-          }
-
-        }
-
-      }
-
-      setState(() {
-
-        filteredTracks = filtered;
-
-      });
-
-    } else {
-
-      setState(() {
-
-        filteredTracks = List<Map<String, Future<String>>>.from(tracks);
-
-      });
-
-    }
-
-  }
 
   @override
   void initState() {
 
     super.initState();
-    fetchData();
+    final selectedPlaylist = context.read<ScreenProvider>().selectedPlaylist;
+
+    selectedPlaylist["identifier"]?.then((id) {
+
+      if (_box.get(id) == null) {
+
+        fetchData();
+
+      } else {
+
+        setState(() {
+
+          followers = Future.value(_box.get(id)["followers"]);
+          tracks = convertArray(_box.get(id)["tracks"]);
+          featuredArtists = convertArray(_box.get(id)["featured"]);
+          filteredTracks = convertArray(_box.get(id)["tracks"]);
+
+        });
+
+      }
+
+    });
 
   }
 
@@ -138,7 +82,7 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
       String number = formatNumber(data["followers"]["total"].toString()) + " followers";
       List<Map<String, Future<String>>> tracklist = [];
       final allTracks = data["tracks"]["items"];
-      List<Map<String, Future<String>>> artist_featured = [];
+      List<Map<String, Future<String>>> featured_artists = [];
       List<String> allArtists = [];
 
       for (int index = 0; index < allTracks.length; index++) {
@@ -180,7 +124,7 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
           }
 
           final joined = artists.join(", ");
-          artist_featured.addAll(features);
+          featured_artists.addAll(features);
           tracklist.add({ "duration": Future.value(duration), 
                           "image": Future.value(image),
                           "artists": Future.value(joined),
@@ -190,11 +134,15 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
 
       }
 
+      _box.put(id, { "tracks": await convertFutureArray(tracklist),
+                     "followers": number,
+                     "featured": await convertFutureArray(featured_artists) });
+
       setState(() {
 
         followers = Future.value(number);
         tracks = tracklist;
-        featuredArtists = artist_featured;
+        featuredArtists = featured_artists;
         filteredTracks = tracklist;
 
       });
@@ -202,6 +150,50 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
     } else {
 
       print('Request failed with status: ${response.statusCode}');
+
+    }
+
+  }
+
+  void filterSearch(String value) async {
+
+    if (value.isNotEmpty) {
+
+      final List<Map<String, Future<String>>> filtered = [];
+
+      for (final track in tracks) {
+
+        final String? song = await track["song"];
+        final String? artists = await track["artists"];
+
+        if (song != null && artists != null) {
+
+          final songMatch = song.toLowerCase().contains(value.toLowerCase());
+          final artistMatch = artists.toLowerCase().contains(value.toLowerCase());
+
+          if (songMatch || artistMatch) {
+
+            filtered.add(track);
+
+          }
+
+        }
+
+      }
+
+      setState(() {
+
+        filteredTracks = filtered;
+
+      });
+
+    } else {
+
+      setState(() {
+
+        filteredTracks = List<Map<String, Future<String>>>.from(tracks);
+
+      });
 
     }
 

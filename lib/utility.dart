@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:intl/intl.dart';
+// import 'dart:async';
 
 
 Widget textBuilder(context, snapshot, size, { int lines = 1, bool bold = false, rich = false }) {
@@ -82,5 +83,57 @@ String formatDuration(int milliseconds) {
   String minutesString = minutes.toString().padLeft(2, '0');
   String secondsString = seconds.toString().padLeft(2, '0');
   return '$minutesString:$secondsString';
+
+}
+
+Future<List<Map<String, String>>> convertFutureArray(List<Map<String, Future<String>>> objects) async {
+
+  final array = await Future.wait(objects.map((item) async {
+
+    final element = <String, String>{};
+
+    await Future.forEach(item.entries, (entry) async {
+
+      final value = await entry.value;
+
+      element[entry.key] = value;
+
+    });
+
+    return element;
+
+  }));
+
+  return array;
+
+}
+
+List<Map<String, Future<String>>> convertArray(List<dynamic> objects) {
+
+  final array = <Map<String, Future<String>>>[];
+
+  for (final item in objects) {
+
+    final element = <String, Future<String>>{};
+
+    item.forEach((key, value) {
+
+      if (value is String) {
+
+        element[key] = Future.value(value);
+
+      } else if (value is Future<String>) {
+
+        element[key] = value;
+
+      }
+
+    });
+
+    array.add(element);
+
+  }
+
+  return array;
 
 }
