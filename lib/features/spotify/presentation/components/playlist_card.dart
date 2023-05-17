@@ -42,7 +42,7 @@ class _PlaylistCardState extends State<PlaylistCard> {
   @override
   Widget build(BuildContext context) {
 
-    return GestureDetector(onTap: () => pressHandler(), 
+    return GestureDetector(onTap: () => (widget.bold == true) ? pressHandler() : {}, 
                            child: Container(padding: EdgeInsets.all(widget.padding),
                                             decoration: BoxDecoration(color: AppColors.grey,
                                             borderRadius: BorderRadius.circular(widget.outerRadius)), 
