@@ -199,6 +199,356 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
 
   }
 
+
+  // void sortTracksByDurationAscending() {
+  //   setState(() {
+  //     filteredTracks.sort((a, b) =>
+  //         a['duration'].compareTo(b['duration']));
+  //   });
+  // }
+
+  // void sortTracksByDurationDescending() {
+  //   setState(() {
+  //     filteredTracks.sort((a, b) =>
+  //         b['duration'].compareTo(a['duration']));
+  //   });
+  // }
+// void sortTracksByDurationAscending() {
+//   setState(() {
+//     filteredTracks.sort((a, b) =>
+//         a['duration']!.compareTo(b['duration']!));
+//   });
+// }
+
+// void sortTracksByDurationDescending() {
+//   setState(() {
+//     filteredTracks.sort((a, b) =>
+//         b['duration']!.compareTo(a['duration']!));
+//   });
+// }
+
+
+
+
+
+
+
+
+
+
+// void sortTracksByDurationAscending() {
+//   setState(() {
+//     filteredTracks.sort((a, b) =>
+//         a['duration'].then((valueA) => b['duration'].then((valueB) => valueA!.compareTo(valueB!))));
+//   });
+// }
+
+// void sortTracksByDurationDescending() {
+//   setState(() {
+//     filteredTracks.sort((a, b) =>
+//         b['duration'].then((valueB) => a['duration'].then((valueA) => valueB!.compareTo(valueA!))));
+//   });
+// }
+
+// void sortTracksAlphabetically() {
+//   setState(() {
+//     filteredTracks.sort((a, b) =>
+//         a['song'].then((valueA) => b['song'].then((valueB) => valueA!.compareTo(valueB!))));
+//   });
+
+
+
+
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+// void sortTracksByDurationAscending() async {
+//   // Convert filteredTracks from List<Map<String, Future<String>>> to List<Map<String, String>>
+//   final List<Map<String, String>> convertedTracks = [];
+//   for (final track in filteredTracks) {
+//     final String image = await track["image"];
+//     final String artists = await track["artists"];
+//     convertedTracks.add({
+//       "image": image,
+//       "artists": artists,
+//     });
+//   }
+
+//   setState(() {
+//     convertedTracks.sort((a, b) => a['duration'].compareTo(b['duration']));
+
+//     // Convert convertedTracks back to List<Map<String, Future<String>>>
+//     filteredTracks = convertedTracks.map((item) {
+//       final String image = item["image"];
+//       final String artists = item["artists"];
+//       return {
+//         "image": Future.value(image),
+//         "artists": Future.value(artists),
+//       };
+//     }).toList();
+//   });
+// }
+
+// void sortTracksByDurationDescending() async {
+//   // Convert filteredTracks from List<Map<String, Future<String>>> to List<Map<String, String>>
+//   final List<Map<String, String>> convertedTracks = [];
+//   for (final track in filteredTracks) {
+//     final String image = await track["image"];
+//     final String artists = await track["artists"];
+//     convertedTracks.add({
+//       "image": image,
+//       "artists": artists,
+//     });
+//   }
+
+//   setState(() {
+//     convertedTracks.sort((a, b) => b['duration'].compareTo(a['duration']));
+
+//     // Convert convertedTracks back to List<Map<String, Future<String>>>
+//     filteredTracks = convertedTracks.map((item) {
+//       final String image = item["image"];
+//       final String artists = item["artists"];
+//       return {
+//         "image": Future.value(image),
+//         "artists": Future.value(artists),
+//       };
+//     }).toList();
+//   });
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// void sortTracksByDurationAscending() async {
+//   final List<Map<String, String?>> convertedTracks = [];
+//   for (final track in filteredTracks) {
+//     final String? image = await track["image"];
+//     final String? artists = await track["artists"];
+//     convertedTracks.add({
+//       "image": image ?? '',
+//       "artists": artists ?? '',
+//     });
+//   }
+
+//   setState(() {
+//     convertedTracks.sort((a, b) => a['duration']!.compareTo(b['duration']!));
+
+//     filteredTracks = convertedTracks.map((item) {
+//       final String image = item["image"]!;
+//       final String artists = item["artists"]!;
+//       return {
+//         "image": Future.value(image),
+//         "artists": Future.value(artists),
+//       };
+//     }).toList();
+//   });
+// }
+
+// void sortTracksByDurationDescending() async {
+//   final List<Map<String, String?>> convertedTracks = [];
+//   for (final track in filteredTracks) {
+//     final String? image = await track["image"];
+//     final String? artists = await track["artists"];
+//     convertedTracks.add({
+//       "image": image ?? '',
+//       "artists": artists ?? '',
+//     });
+//   }
+
+//   setState(() {
+//     convertedTracks.sort((a, b) => b['duration']!.compareTo(a['duration']!));
+
+//     filteredTracks = convertedTracks.map((item) {
+//       final String image = item["image"]!;
+//       final String artists = item["artists"]!;
+//       return {
+//         "image": Future.value(image),
+//         "artists": Future.value(artists),
+//       };
+//     }).toList();
+//   });
+// }
+
+
+
+
+void sortTracksByDurationAscending() async {
+  final List<Map<String, String?>> convertedTracks = [];
+  for (final track in filteredTracks) {
+    final String? image = await track["image"];
+    final String? artists = await track["artists"];
+    final String? duration = await track["duration"];
+    final String? song = await track["song"];
+    convertedTracks.add({
+      "image": image ?? '',
+      "artists": artists ?? '',
+      "duration": duration ?? '',
+      "song": song ?? '',
+    });
+  }
+
+  setState(() {
+    convertedTracks.sort((a, b) => a['duration']!.compareTo(b['duration']!));
+
+    filteredTracks = convertedTracks.map((item) {
+      final String image = item["image"]!;
+      final String artists = item["artists"]!;
+      final String duration = item["duration"]!;
+      final String song = item["song"]!;
+      return {
+        "image": Future.value(image),
+        "artists": Future.value(artists),
+        "duration": Future.value(duration),
+        "song": Future.value(song),
+      };
+    }).toList();
+  });
+}
+
+void sortTracksByDurationDescending() async {
+  final List<Map<String, String?>> convertedTracks = [];
+  for (final track in filteredTracks) {
+    final String? image = await track["image"];
+    final String? artists = await track["artists"];
+    final String? duration = await track["duration"];
+    final String? song = await track["song"];
+    convertedTracks.add({
+      "image": image ?? '',
+      "artists": artists ?? '',
+      "duration": duration ?? '',
+      "song": song ?? '',
+    });
+  }
+
+  setState(() {
+    convertedTracks.sort((a, b) => b['duration']!.compareTo(a['duration']!));
+
+    filteredTracks = convertedTracks.map((item) {
+      final String image = item["image"]!;
+      final String artists = item["artists"]!;
+      final String duration = item["duration"]!;
+      final String song = item["song"]!;
+      return {
+        "image": Future.value(image),
+        "artists": Future.value(artists),
+        "duration": Future.value(duration),
+        "song": Future.value(song),
+      };
+    }).toList();
+  });
+}
+
+
+
+
+
+
+void sortTracksBySongNameAscending() async {
+  final List<Map<String, String?>> convertedTracks = [];
+  for (final track in filteredTracks) {
+    final String? image = await track["image"];
+    final String? artists = await track["artists"];
+    final String? duration = await track["duration"];
+    final String? song = await track["song"];
+    convertedTracks.add({
+      "image": image ?? '',
+      "artists": artists ?? '',
+      "duration": duration ?? '',
+      "song": song ?? '',
+    });
+  }
+
+  setState(() {
+    convertedTracks.sort((a, b) => a['song']!.compareTo(b['song']!));
+
+    filteredTracks = convertedTracks.map((item) {
+      final String image = item["image"]!;
+      final String artists = item["artists"]!;
+      final String duration = item["duration"]!;
+      final String song = item["song"]!;
+      return {
+        "image": Future.value(image),
+        "artists": Future.value(artists),
+        "duration": Future.value(duration),
+        "song": Future.value(song),
+      };
+    }).toList();
+  });
+}
+
+void sortTracksBySongNameDescending() async {
+  final List<Map<String, String?>> convertedTracks = [];
+  for (final track in filteredTracks) {
+    final String? image = await track["image"];
+    final String? artists = await track["artists"];
+    final String? duration = await track["duration"];
+    final String? song = await track["song"];
+    convertedTracks.add({
+      "image": image ?? '',
+      "artists": artists ?? '',
+      "duration": duration ?? '',
+      "song": song ?? '',
+    });
+  }
+
+  setState(() {
+    convertedTracks.sort((a, b) => b['song']!.compareTo(a['song']!));
+
+    filteredTracks = convertedTracks.map((item) {
+      final String image = item["image"]!;
+      final String artists = item["artists"]!;
+      final String duration = item["duration"]!;
+      final String song = item["song"]!;
+      return {
+        "image": Future.value(image),
+        "artists": Future.value(artists),
+        "duration": Future.value(duration),
+        "song": Future.value(song),
+      };
+    }).toList();
+  });
+}
+
+
+
+
+
+
+
+
+
+
+  void sortTracksRandomly() {
+    setState(() {
+      filteredTracks.shuffle();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -222,7 +572,52 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
                                                                                                     prefixIcon: Padding(padding: EdgeInsets.symmetric(vertical: 8),
                                                                                                                         child: Icon(Icons.search), ),
 
-                                                                                                    contentPadding: EdgeInsets.all(0), ), ), ), ], ), 
+                                                                                                    contentPadding: EdgeInsets.all(0), ), ), ), 
+                                                                                                    
+                                                    
+    PopupMenuButton<String>(
+      icon: Icon(Icons.menu,
+                 color: Colors.white),
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+        PopupMenuItem<String>(
+          value: 'duration_asc',
+          child: Text('Sort by Duration (Ascending)'),
+        ),
+        PopupMenuItem<String>(
+          value: 'duration_desc',
+          child: Text('Sort by Duration (Descending)'),
+        ),
+        PopupMenuItem<String>(
+          value: 'alphabetic_asc',
+          child: Text('Sort Alphabetically (Ascending)'),
+        ),
+        PopupMenuItem<String>(
+          value: 'alphabetic_desc',
+          child: Text('Sort Alphabetically (Descending)'),
+        ),
+        PopupMenuItem<String>(
+          value: 'random',
+          child: Text('Random Sort'),
+        ),
+      ],
+      onSelected: (String value) {
+        // Handle the selected option
+        if (value == 'duration_asc') {
+          sortTracksByDurationAscending();
+        } else if (value == 'duration_desc') {
+          sortTracksByDurationDescending();
+        } else if (value == 'alphabetic_desc') {
+          sortTracksBySongNameDescending();
+        } else if (value == 'alphabetic_asc') {
+          sortTracksBySongNameAscending();
+        } else if (value == 'random') {
+          sortTracksRandomly();
+        }
+      },
+
+      color: AppColors.black,
+    ),
+  ], ), 
 
                     backgroundColor: AppColors.black,
                     body: SingleChildScrollView(physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
