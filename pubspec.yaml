@@ -34,11 +34,23 @@ dependencies:
   package_info_plus: ^4.0.0
   rive: ^0.10.4
   url_launcher: ^6.1.11
+  flutter_dotenv: ^5.0.2
+  http: ^0.13.6
+  provider: ^6.0.5
+  html: ^0.15.3
+  intl: ^0.18.1
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
 
 dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
+  hive_generator: ^2.0.0
+
+dependency_overrides:
+  build_runner: ^2.4.4
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -52,6 +64,8 @@ flutter:
   assets:
     - assets/animations/palota_intro.riv
     - assets/images/logo_white.png
+    - .env
+    
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
   # For details regarding adding assets from package dependencies, see
