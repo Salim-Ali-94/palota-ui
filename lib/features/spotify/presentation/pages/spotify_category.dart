@@ -6,7 +6,6 @@ import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/
 import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/components/grid_section.dart';
 import "package:http/http.dart" as http;
 import "dart:convert";
-
 import 'package:flutter_spotify_africa_assessment/providers/screen_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:html/parser.dart' as htmlParser;
@@ -175,16 +174,17 @@ class _SpotifyCategoryState extends State<SpotifyCategory> {
       ),
 
       body: SingleChildScrollView(controller: _scrollController,
-                                  physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                                  child: Container(padding: EdgeInsets.symmetric(vertical: 32), 
+                                  physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                                  child: Container(padding: const EdgeInsets.symmetric(vertical: 32), 
                                                   //  color: AppColors.black,
-                                                   child: Column(children: [Container(padding: EdgeInsets.only(left: 24), child: Row(mainAxisAlignment: MainAxisAlignment.end,
-                                                                                children: [Header(image: image,
-                                                                                                  category: category), ], )), 
-                                                                                                  
-                                                                                           SizedBox(height: 32),
-                                                                                          
-                                                                                           GridSection(playlists: playlists), ], ), ), ),
+                                                   child: Column(children: [Container(padding: const EdgeInsets.only(left: 24), 
+                                                                                     child: Row(mainAxisAlignment: MainAxisAlignment.end,
+                                                                                                children: [Header(image: image,
+                                                                                                                  category: category), ], ), ), 
+                                                                                                                  
+                                                                            const SizedBox(height: 32),
+                                                                          
+                                                                            GridSection(playlists: playlists), ], ), ), ),
 
     );
   }
