@@ -314,11 +314,17 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
 
                                                                      onSelected: (String value) {
 
-                                                                                    if (value == 'duration_ascend') sortTracks(value);
-                                                                                    else if (value == 'duration_descend') sortTracks(value);
-                                                                                    else if (value == 'title_ascend') sortTracks(value);
-                                                                                    else if (value == 'title_descend') sortTracks(value);
-                                                                                    else if (value == 'random') randomSort();
+                                                                                    if (value == 'duration_ascend') {
+                                                                                      sortTracks(value);
+                                                                                    } else if (value == 'duration_descend') {
+                                                                                      sortTracks(value);
+                                                                                    } else if (value == 'title_ascend') {
+                                                                                      sortTracks(value);
+                                                                                    } else if (value == 'title_descend') {
+                                                                                      sortTracks(value);
+                                                                                    } else if (value == 'random') {
+                                                                                      randomSort();
+                                                                                    }
 
                                                                                   },
 
