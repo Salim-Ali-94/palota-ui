@@ -13,9 +13,7 @@ import 'package:flutter_spotify_africa_assessment/features/spotify/presentation/
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_spotify_africa_assessment/constants.dart';
-
 import 'package:hive/hive.dart';
-import 'package:flutter_spotify_africa_assessment/cache.dart';
 
 
 class SpotifyPlaylist extends StatefulWidget {
@@ -31,10 +29,7 @@ class SpotifyPlaylist extends StatefulWidget {
 class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
 
   Future<String>? followers;
-
   final _box = Hive.box("collection");
-  // PlaylistCache cache = PlaylistCache();
-
   List<Map<String, Future<String>>> featuredArtists = [{ "image": Future.value(""),
                                                          "name": Future.value("") }];
 
@@ -43,85 +38,6 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
 
   List<Map<String, Future<String>>> filteredTracks = [{ "image": Future.value(""),
                                                         "artists": Future.value("") }];
- 
-  // void filterSearch(String value) async {
-
-  //   if (value.isNotEmpty) {
-
-  //     final tracks_result = await Future.wait(filteredTracks.map((track) async {
-
-  //       final String? song = await track["song"];
-  //       final String? artists = await track["artists"];
-  //       return song?.toString().toLowerCase().contains(value.toLowerCase()) == true ||
-  //              artists?.toString().toLowerCase().contains(value.toLowerCase()) == true;
-
-  //     }));
-
-  //     setState(() {
-
-  //       filteredTracks = tracks_result.asMap()
-  //                                     .entries
-  //                                     .where((entry) => entry.value)
-  //                                     .map((entry) => filteredTracks[entry.key])
-  //                                     .toList()
-  //                                     .cast<Map<String, Future<String>>>();
-
-  //     });
-
-  //   } else {
-
-  //     setState(() {
-
-  //       filteredTracks = List<Map<String, Future<String>>>.from(tracks);
-
-  //     });
-
-  //   }
-
-  // }
-  void filterSearch(String value) async {
-
-    if (value.isNotEmpty) {
-
-      final List<Map<String, Future<String>>> filtered = [];
-
-      for (final track in tracks) {
-
-        final String? song = await track["song"];
-        final String? artists = await track["artists"];
-
-        if (song != null && artists != null) {
-
-          final songMatch = song.toLowerCase().contains(value.toLowerCase());
-          final artistMatch = artists.toLowerCase().contains(value.toLowerCase());
-
-          if (songMatch || artistMatch) {
-
-            filtered.add(track);
-
-          }
-
-        }
-
-      }
-
-      setState(() {
-
-        filteredTracks = filtered;
-
-      });
-
-    } else {
-
-      setState(() {
-
-        filteredTracks = List<Map<String, Future<String>>>.from(tracks);
-
-      });
-
-    }
-
-  }
 
   @override
   void initState() {
@@ -143,171 +59,14 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
           tracks = convertArray(_box.get(id)["tracks"]);
           featuredArtists = convertArray(_box.get(id)["featured"]);
           filteredTracks = convertArray(_box.get(id)["tracks"]);
-          // List<Map<String, Future<String>>> tracks = convertArray(_box.get(id)["tracks"]);
-          // List<Map<String, Future<String>>> featuredArtists = convertArray(_box.get(id)["featured"]);
-          // List<Map<String, Future<String>>> filteredTracks = convertArray(_box.get(id)["tracks"]);
-
-
-        // _box.get(id)["tracks"].then((entry) {
-        //   tracks = convertArray(entry);
-        // });
-
-        // _box.get(id)["featured"].then((entry) {
-        //   featuredArtists = convertArray(entry);
-        // });
-
-        // _box.get(id)["tracks"].then((entry) {
-        //   filteredTracks = convertArray(entry);
-        // });
-
 
         });
-// _box.get(id)["tracks"].then((entry) {
-//         convertArray(entry).then((convertedTracks) {
-//           setState(() {
-//             tracks = convertedTracks;
-//             filteredTracks = convertedTracks;
-//           });
-//         });
-//       });
-
-//       _box.get(id)["featured"].then((entry) {
-//         convertArray(entry).then((convertedFeaturedArtists) {
-//           setState(() {
-//             featuredArtists = convertedFeaturedArtists;
-//           });
-//         });
-//       });
-        // _box.get(id)["tracks"].then((entry) {
-        
-        //   convertArray(entry).then((element) {
-
-        //     setState(() {
-
-        //       tracks = element;
-            
-        //     });
-          
-        //   });
-        
-        // });
-
-        // _box.get(id)["featured"].then((entry) {
-        
-        //   convertArray(entry).then((element) {
-
-        //     setState(() {
-
-        //       featuredArtists = element;
-            
-        //     });
-          
-        //   });
-        
-        // });
-
-        // _box.get(id)["tracks"].then((entry) {
-        
-        //   convertArray(entry).then((element) {
-
-        //     setState(() {
-
-        //       filteredTracks = element;
-            
-        //     });
-          
-        //   });
-        
-        // });
 
       }
 
     });
 
-    // // if (_box.get("tracks") == null) {
-    // if (_box.get("tracks") == null) {
-
-    //   // cache.createInitialData();
-    //   fetchData();
-
-    // } else {
-
-    //   // cache.loadData();
-    //   // _box.loadData();
-    //   _box.get("tracks");
-    //   // check if id for this tracklist exists
-
-    //   for (int position = 0; position < cache.tracksCollection.length; position++) {
-
-    //     if (cache.tracksCollection[position]["id"] == );
-
-    //   }
-
-    //   // y
-
-    //     // check if there are any new items in endpoint for id
-
-    //       // y ==> append to cache for this id
-    //       xx // n ==> use cache as is
-
-    //   // n
-
-    //     xx // fetchData(); + set store in cache
-
-    // }
-
-    // super.initState();
-    // fetchData();
-
   }
-
-
-
-
-
-  // void checkBoxChanged(bool? value, int index) {
-
-  //   setState(() {
-      
-  //     cache.tracksCollection[index][1] = !cache.tracksCollection[index][1];
-
-  //     cache.updateData();
-
-  //   });
-
-  // }
-
-
-  // void saveNewTask() {
-
-  //   setState(() {
-      
-  //     cache.tracksCollection.add([_controller.text, false]);
-  //     _controller.clear();
-
-  //   });
-
-  //   Navigator.of(context).pop();
-  //   cache.updateData();
-
-  // }
-
-
-
-  // void deleteTask(int index) {
-
-  //   setState(() {
-      
-  //     cache.tracksCollection.removeAt(index);
-
-  //   });
-
-  //   cache.updateData();
-
-  // }
-
-
-
 
   Future<void> fetchData() async {
 
@@ -370,30 +129,14 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
                           "image": Future.value(image),
                           "artists": Future.value(joined),
                           "song": Future.value(song), });
-          
-          //  _box.put(id, tracklist);
-          //  _box.put(id, { "tracks": tracklist,
-          //                 "followers": Future.value(number),
-          //                 "featured": featured_artists });
-
-          //  _box.put(id, { "tracks": await convertFutureArray(tracklist),
-          //                 "followers": Future.value(number),
-          //                 "featured": featured_artists });
-
-          // cache.initializeData(tracklist);
 
         }
 
       }
 
-      print("converting + storing...");
       _box.put(id, { "tracks": await convertFutureArray(tracklist),
                      "followers": number,
                      "featured": await convertFutureArray(featured_artists) });
-      // _box.put(id, { "tracks": convertFutureArray(tracklist),
-      //                "followers": number,
-      //                "featured": convertFutureArray(featured_artists) });
-      print("done!");
 
       setState(() {
 
@@ -407,6 +150,50 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
     } else {
 
       print('Request failed with status: ${response.statusCode}');
+
+    }
+
+  }
+
+  void filterSearch(String value) async {
+
+    if (value.isNotEmpty) {
+
+      final List<Map<String, Future<String>>> filtered = [];
+
+      for (final track in tracks) {
+
+        final String? song = await track["song"];
+        final String? artists = await track["artists"];
+
+        if (song != null && artists != null) {
+
+          final songMatch = song.toLowerCase().contains(value.toLowerCase());
+          final artistMatch = artists.toLowerCase().contains(value.toLowerCase());
+
+          if (songMatch || artistMatch) {
+
+            filtered.add(track);
+
+          }
+
+        }
+
+      }
+
+      setState(() {
+
+        filteredTracks = filtered;
+
+      });
+
+    } else {
+
+      setState(() {
+
+        filteredTracks = List<Map<String, Future<String>>>.from(tracks);
+
+      });
 
     }
 
@@ -495,9 +282,3 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
   }
 
 }
-
-
-
-// model for stored = string + future string
-// 
-// 
