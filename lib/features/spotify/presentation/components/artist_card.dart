@@ -21,9 +21,9 @@ class ArtistCard extends StatelessWidget {
 
     return Container(height: 143,
                      width: 120,
-                     margin: (this.position == 0) ? EdgeInsets.only(left: this.gap, right: this.gap) : EdgeInsets.only(right: this.gap),
+                     margin: (position == 0) ? EdgeInsets.only(left: gap, right: gap) : EdgeInsets.only(right: gap),
                      child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                   children: [FutureBuilder<String>(future: this.image,
+                                   children: [FutureBuilder<String>(future: image,
                                                                     builder: (context, snapshot) => imageBuilder(context, snapshot, 32.0, width: 120.0, height: 120.0), ), 
 
                                               FutureBuilder<String>(future: name,

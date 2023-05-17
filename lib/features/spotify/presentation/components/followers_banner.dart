@@ -14,13 +14,13 @@ class FollowersBanner extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Container(height: 32,
-                     padding: EdgeInsets.only(right: 16),
-                     decoration: BoxDecoration(color: AppColors.grey,
-                                               borderRadius: BorderRadius.only(topLeft: Radius.circular(12),
-                                                                               bottomLeft: Radius.circular(12), ), ), 
+                     padding: const EdgeInsets.only(right: 16),
+                     decoration: const BoxDecoration(color: AppColors.grey,
+                                                     borderRadius: BorderRadius.only(topLeft: Radius.circular(12),
+                                                                                     bottomLeft: Radius.circular(12), ), ), 
                                                                                
                      child: Row(mainAxisAlignment: MainAxisAlignment.end,
-                                children: [FutureBuilder<String>(future: this.followers,
+                                children: [FutureBuilder<String>(future: followers,
                                                                  builder: (context, snapshot) => textBuilder(context, snapshot, 11.0, bold: true), ),], ), );
 
   }

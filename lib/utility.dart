@@ -27,13 +27,13 @@ Widget textBuilder(context, snapshot, size, { int lines = 1, bool bold = false, 
 
     } else {
       
-        return CircularProgressIndicator();
+        return const CircularProgressIndicator();
 
     }
 
   } else {
 
-    return CircularProgressIndicator();
+    return const CircularProgressIndicator();
 
   }
 
@@ -48,20 +48,20 @@ Widget imageBuilder(context, snapshot, radius, { width = null, height = null }) 
     if (url != null && url.isNotEmpty && url != "") {
 
       return ClipRRect(borderRadius: BorderRadius.circular(radius), 
-                        child: Image.network(url!,
-                                             fit: BoxFit.cover,
-                                             width: width,
-                                             height: height));
+                       child: Image.network(url!,
+                                            fit: BoxFit.cover,
+                                            width: width,
+                                            height: height));
 
     } else {
 
-        return Center(child: CircularProgressIndicator());
+        return const Center(child: CircularProgressIndicator());
 
     }
 
   } else {
 
-      return Center(child: CircularProgressIndicator());
+      return const Center(child: CircularProgressIndicator());
 
   }
 

@@ -199,6 +199,75 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
 
   }
 
+  void sortTracks(String type) async {
+
+    final List<Map<String, String?>> convertedTracks = [];
+
+    for (final track in filteredTracks) {
+
+      final String? image = await track["image"];
+      final String? artists = await track["artists"];
+      final String? duration = await track["duration"];
+      final String? song = await track["song"];
+
+      convertedTracks.add({ "image": image ?? '',
+                            "artists": artists ?? '',
+                            "duration": duration ?? '',
+                            "song": song ?? '', });
+
+    }
+
+    setState(() {
+
+      if (type == "duration_ascend") {
+        
+        convertedTracks.sort((a, b) => a['duration']!.compareTo(b['duration']!));
+
+      } else if (type == "duration_descend") {
+        
+        convertedTracks.sort((a, b) => b['duration']!.compareTo(a['duration']!)); 
+
+      } else if (type == "title_ascend") {
+        
+        convertedTracks.sort((a, b) => a['song']!.compareTo(b['song']!));
+      
+      } else if (type == "title_descend") {
+        
+        convertedTracks.sort((a, b) => b['song']!.compareTo(a['song']!));
+
+      } else {
+
+        convertedTracks.shuffle();
+
+      }
+
+      filteredTracks = convertedTracks.map((item) {
+
+                                              final String image = item["image"]!;
+                                              final String artists = item["artists"]!;
+                                              final String duration = item["duration"]!;
+                                              final String song = item["song"]!;
+                                              return { "image": Future.value(image),
+                                                       "artists": Future.value(artists),
+                                                       "duration": Future.value(duration),
+                                                       "song": Future.value(song), };
+
+                                            }).toList();
+
+    });
+
+  }
+
+  void randomSort() {
+
+    setState(() {
+
+      filteredTracks.shuffle();
+
+    });
+
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -208,27 +277,58 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
     return Scaffold(appBar: AppBar(backgroundColor: Colors.transparent,
                                    elevation: 0,
                                    actions: [Container(width: screenWidth*0.5, height: 35,
-                                                       margin: EdgeInsets.symmetric(vertical: 8, 
-                                                                                    horizontal: 16),
+                                                       margin: const EdgeInsets.symmetric(vertical: 8, 
+                                                                                          horizontal: 16),
 
                                                        decoration: BoxDecoration(color: Colors.white,
                                                                                  borderRadius: BorderRadius.circular(8), ),
 
                                                        child: TextField(onChanged: (value) => filterSearch(value),
-                                                                        style: TextStyle(color: Colors.black),
-                                                                        decoration: InputDecoration(hintText: 'Search',
-                                                                                                    hintStyle: TextStyle(color: Colors.grey, ),
-                                                                                                    border: InputBorder.none,
-                                                                                                    prefixIcon: Padding(padding: EdgeInsets.symmetric(vertical: 8),
-                                                                                                                        child: Icon(Icons.search), ),
+                                                                        style: const TextStyle(color: Colors.black),
+                                                                        decoration: const InputDecoration(hintText: 'Search',
+                                                                                                          hintStyle: TextStyle(color: Colors.grey, ),
+                                                                                                          border: InputBorder.none,
+                                                                                                          prefixIcon: Padding(padding: EdgeInsets.symmetric(vertical: 8),
+                                                                                                                              child: Icon(Icons.search), ),
 
-                                                                                                    contentPadding: EdgeInsets.all(0), ), ), ), ], ), 
+                                                                                                          contentPadding: EdgeInsets.all(0), ), ), ), 
+                                                                                                    
+                                                    
+                                             PopupMenuButton<String>(icon: const Icon(Icons.menu,
+                                                                                      color: Colors.white),
+
+                                                                     itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[const PopupMenuItem<String>(value: 'duration_ascend',
+                                                                                                                                                                 child: Text('Sort by Duration (Ascending)'), ),
+
+                                                                                                                                    const PopupMenuItem<String>(value: 'duration_descend',
+                                                                                                                                                                child: Text('Sort by Duration (Descending)'), ),
+
+                                                                                                                                    const PopupMenuItem<String>(value: 'title_ascend',
+                                                                                                                                                                child: Text('Sort Alphabetically (Ascending)'), ),
+
+                                                                                                                                    const PopupMenuItem<String>(value: 'title_descend',
+                                                                                                                                                                child: Text('Sort Alphabetically (Descending)'), ),
+
+                                                                                                                                    const PopupMenuItem<String>(value: 'random',
+                                                                                                                                                                child: Text('Shuffle Tracks'), ), ],
+
+                                                                     onSelected: (String value) {
+
+                                                                                    if (value == 'duration_ascend') sortTracks(value);
+                                                                                    else if (value == 'duration_descend') sortTracks(value);
+                                                                                    else if (value == 'title_ascend') sortTracks(value);
+                                                                                    else if (value == 'title_descend') sortTracks(value);
+                                                                                    else if (value == 'random') randomSort();
+
+                                                                                  },
+
+                                                                     color: AppColors.black, ), ], ), 
 
                     backgroundColor: AppColors.black,
-                    body: SingleChildScrollView(physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                                                child: Container(padding: EdgeInsets.symmetric(vertical: 16),
-                                                                 child: Column(children: [Container(padding: EdgeInsets.only(left: 48,
-                                                                                                                             right: 48, ),
+                    body: SingleChildScrollView(physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                                                child: Container(padding: const EdgeInsets.symmetric(vertical: 16),
+                                                                 child: Column(children: [Container(padding: const EdgeInsets.only(left: 48,
+                                                                                                                                  right: 48, ),
                                                                                                                 
                                                                                                     child: PlaylistCard(playlist: selectedPlaylist,
                                                                                                                         padding: 15,
@@ -238,38 +338,38 @@ class _SpotifyPlaylistState extends State<SpotifyPlaylist> {
                                                                                                                         innerRadius: 12,
                                                                                                                         outerRadius: 24, ), ), 
                                                                                                            
-                                                                                           SizedBox(height: 15), 
+                                                                                           const SizedBox(height: 15), 
                                                                                           
-                                                                                           Container(padding: EdgeInsets.symmetric(horizontal: 16),
+                                                                                           Container(padding: const EdgeInsets.symmetric(horizontal: 16),
                                                                                                      child: Row(children: [Expanded(child: FutureBuilder<String>(future: selectedPlaylist["description"],
                                                                                                                                                                  builder: (context, snapshot) => textBuilder(context, snapshot, 12.0, lines: 2, bold: true), ), ), ], ), ), 
                                                                                                                 
-                                                                                           SizedBox(height: 4), 
+                                                                                           const SizedBox(height: 4), 
                                                                                           
-                                                                                           Container(padding: EdgeInsets.only(left: 195),
+                                                                                           Container(padding: const EdgeInsets.only(left: 195),
                                                                                                      child: FollowersBanner(followers: followers), ),
                                                                                            
-                                                                                           SizedBox(height: 16), 
+                                                                                           const SizedBox(height: 16), 
 
-                                                                                           Container(padding: EdgeInsets.symmetric(horizontal: 32), 
-                                                                                                     child: SectionDivider(), ), 
+                                                                                           Container(padding: const EdgeInsets.symmetric(horizontal: 32), 
+                                                                                                     child: const SectionDivider(), ), 
                                                                                                      
-                                                                                           SizedBox(height: 32), 
+                                                                                           const SizedBox(height: 32), 
 
-                                                                                           Container(padding: EdgeInsets.only(left: 16,
-                                                                                                                              right: 16, ), 
+                                                                                           Container(padding: const EdgeInsets.only(left: 16,
+                                                                                                                                    right: 16, ), 
                                                                                                      
                                                                                                      child: Column(children: (filteredTracks.length == 0) ? [Container(width: screenWidth*0.9, 
-                                                                                                                                                                       child: Text("No tracks exist that match your search query",
-                                                                                                                                                                                   style: TextStyle(fontWeight: FontWeight.bold, ), ), ), ] : filteredTracks.map((entry) { return [TracklistRow(track: entry),
-                                                                                                                                                                                                                                                                                   (entry != tracks[tracks.length - 1]) ? SizedBox(height: 10) : SizedBox.shrink(), ]; }, ).expand((element) => element).toList(), ), ),
+                                                                                                                                                                       child: const Text("No tracks exist that match your search query",
+                                                                                                                                                                                         style: TextStyle(fontWeight: FontWeight.bold, ), ), ), ] : filteredTracks.map((entry) { return [TracklistRow(track: entry),
+                                                                                                                                                                                                                                                                                         (entry != tracks[tracks.length - 1]) ? const SizedBox(height: 10) : const SizedBox.shrink(), ]; }, ).expand((element) => element).toList(), ), ),
                                                                                                                                                                                                                                                             
-                                                                                           SizedBox(height: 32),
+                                                                                           const SizedBox(height: 32),
 
-                                                                                           Container(padding: EdgeInsets.only(right: 48), 
-                                                                                                     child: FeaturedBanner(), ), 
+                                                                                           Container(padding: const EdgeInsets.only(right: 48), 
+                                                                                                     child: const FeaturedBanner(), ), 
                                                                                                      
-                                                                                           SizedBox(height: 32),
+                                                                                           const SizedBox(height: 32),
                                                                                            
                                                                                            Container(height: 143, 
                                                                                                      child: ListView.builder(scrollDirection: Axis.horizontal,

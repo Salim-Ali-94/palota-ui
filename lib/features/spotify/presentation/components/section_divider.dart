@@ -11,11 +11,11 @@ class SectionDivider extends StatelessWidget {
 
     return Container(height: 4,
                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(50),
-                                               gradient: LinearGradient(colors: [ AppColors.blue,
-                                                                                  AppColors.cyan, 
-                                                                                  AppColors.green, ], 
-                                                                        begin: Alignment.centerLeft, 
-                                                                        end: Alignment.centerRight, ), ), );
+                                               gradient: const LinearGradient(colors: [ AppColors.blue,
+                                                                                        AppColors.cyan, 
+                                                                                        AppColors.green, ], 
+                                                                              begin: Alignment.centerLeft, 
+                                                                              end: Alignment.centerRight, ), ), );
 
   }
 
